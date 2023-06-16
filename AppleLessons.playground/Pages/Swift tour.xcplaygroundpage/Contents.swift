@@ -435,6 +435,130 @@ print(threeOfSpades.simpleDescription())
 threeOfSpades.returnFullDeck()
 
 // Протоколы и расширения
+// для обявления протокла используется оператор protocol
+protocol ExampleProtocol {
+    var simpleDescription: String { get }
+    mutating func adjust()
+}
+
+// Классы, перечисления и структуры могут соответствовать протоколам (или быть подписанными на протокол)
+
+class SimpleClass: ExampleProtocol {
+ 
+    var simpleDescription: String = "A very simple class"
+    var anotherProperty: Int = 4545
+    
+    func adjust() {
+        simpleDescription += " Now 100% adjusted"
+    }
+}
+
+var someSimpleClass = SimpleClass()
+someSimpleClass.adjust()
+let description = someSimpleClass.simpleDescription
+
+struct SimpleStructure: ExampleProtocol {
+
+    var simpleDescription: String = "A simple structure"
+    
+    mutating func adjust() {
+        simpleDescription += " (adjusted)"
+    }
+}
+
+var someSimpleStructure = SimpleStructure()
+someSimpleStructure.adjust()
+someSimpleStructure.simpleDescription
+
+// Для объявления расширения используется оператор extension. Расг=ширение используется для того чтобы добавить новый функционал для существующего типа, такой как объявление новых методов и вычисляемых свойст. Возможно добавить расширения для добавления совмсетимости с протоколом типу, который объявлен в другом месте или даже типу который вы импортировали из библиотеки или фреймворка
+
+extension Int: ExampleProtocol {
+    var simpleDescription: String {
+        return "The number is \(self)"
+    }
+    mutating func adjust() {
+        self += 42
+    }
+}
+print(6.simpleDescription)
+
+extension Double {
+    var absoluteValue: Double {
+        Double(Int(self))
+    }
+}
+2.2.absoluteValue
+
+// Имя протокола может быть использовано точно так же как и другие именованные типы, например чтобы создать коллекцию объектов, которые имеют разные типы данных, но соответствуют одному протоколлу. При работе со значениями чей тип протокол, методы и свойства за пределами объявения протокола недоступны
+
+let protocolValue: ExampleProtocol = someSimpleClass
+print(protocolValue.simpleDescription)
+
+
+// Обработка ошибок
+
+// вы отображаете ошибки, ипспользуя любой тип, который соответствует протоколу Error
+
+enum PrinterError: Error {
+    case outOfPaper
+    case noToner
+    case onFire
+}
+
+// используйте ключевое слово throw для генерации ошибки и throws для обозначения функции, которая может сгенерировать ошибку. Если вы гкенерируете ошибку в функции, то функцмя немедленно возвращается, а код который вызвал функцию, обрабатывает эту ошибку
+
+func send(job: Int, toPrinter printerName: String) throws -> String {
+    if printerName == "Never has toner" {
+        throw PrinterError.noToner
+    } else if printerName == "Fire" {
+        throw PrinterError.onFire
+    } else if job > 1000 {
+        throw PrinterError.outOfPaper
+    }
+    return "Job sent"
+}
+
+// есть несколько способов обработки ошибок. Один из вариантов использование do-catch блока. Внутри блока do, вы маркируете код, который может сгенерировать ошибку при помощи ключевого слова try перед ним. Внутри же блока catch автоматически присвивается имя error, но вы можете изменить его, указать свое собственное
+
+// можно использовать немколько блоков catch для обработки различных ошибок. Вы пишете некий шаблон после каждого блока catch, точно так же как в switch
+do {
+    let printerResponse = try send(job: 1040, toPrinter: "Pfe")
+    print(printerResponse)
+} catch PrinterError.onFire {
+    print("I'll just put this over here, with the rest of the fire.")
+} catch let printerError as PrinterError {
+    print("Print Erroe: \(printerError)")
+} catch {
+    print(error)
+}
+
+// Другим способом обработки ошибок является ключевое слово try?, которое позволяет изменить результат в опциональный тип. Если функция генерирует ошибку, то генерируется конкретная ошибка и результат становится равным nil. В противном случае, результат, содержащий опциональное значение возвращается фуекцией
+
+let printerSuccess = try? send(job: 900, toPrinter: "dssgvs")
+let printerFailure = try? send(job: 1001, toPrinter: "dgssgv")
+
+// Используйте ключевое слово defer для определения блока кода, который должен быть выполнен в последнюю очередь непосредственно перед выходом из самой функции. Код в блоке defer исполняется независимо от того, генерируется ли ошибка в функции или нет. Вы можете использовать defer для настройки или очистки кода рядом рядом друг с другом, несмотря на то, что они могут быть исполнены в различное время
+
+var fridgeIsOpen = false
+let fridgeContent = ["milk", "eggs", "leftovers"]
+
+func fridgeContains(_ food: String) -> Bool {
+    fridgeIsOpen = true
+    defer {
+        fridgeIsOpen = false
+        print(fridgeIsOpen)
+        
+    }
+    print(fridgeIsOpen)
+    let result = fridgeContent.contains(food)
+    return result
+}
+fridgeContains("banana")
+//print(fridgeIsOpen)
+
+
+
+
 
 
 
