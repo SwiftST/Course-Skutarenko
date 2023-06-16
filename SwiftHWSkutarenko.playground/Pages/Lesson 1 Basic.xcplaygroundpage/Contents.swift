@@ -18,7 +18,8 @@ let firstName = "Pavel"
 let lastName = "Zubrilov"
 let growth = 182
 let weight = 80
+let age = 32
 
-print("Full name student - \(firstName) \(lastName)\nhis weight - \(weight)kg\nhis growth - \(growth)sm")
+print("Full name student - \(firstName) \(lastName)\nage - \(age) years old\nhis weight - \(weight)kg\nhis growth - \(growth)sm")
 
 //: [Next](@next)
