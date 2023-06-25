@@ -9,10 +9,10 @@ print("Диапазон UInt: \(UInt.min...UInt.max)")
 
 // 2. Создать три константы - Int, Float, Double. Все три числа должны быть разные, но не ноль. Создать еще три константы - первая является суммой всех трех, результат Int, вторая сумма всех трех результат Double, третья сумма всех трех результат Float
 let valueInt = 12
-let valueFloat: Float = 13
-let valueDouble = 2.1
+let valueFloat: Float = 1.2
+let valueDouble = 2.8
 
-let sumInt = valueInt + Int(valueFloat) + Int(valueDouble)
+let sumInt = Int(Double(valueInt) + Double(valueFloat) + valueDouble)
 let sumFloat = valueFloat + Float(valueInt) + Float(valueDouble)
 let sumDouble = valueDouble + Double(valueInt) + Double(valueFloat)
 
@@ -20,6 +20,8 @@ let sumDouble = valueDouble + Double(valueInt) + Double(valueFloat)
 
 if Double(sumInt) < sumDouble {
     print("Double точнее")
+} else if Double(sumInt) == sumDouble{
+    print("Int equal Double")
 } else {
-    print("Int тоже точен")
+    print("Int is greater")
 }
