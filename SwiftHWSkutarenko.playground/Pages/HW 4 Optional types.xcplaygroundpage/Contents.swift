@@ -44,34 +44,33 @@ print("Sum equal - \(sum)")
 
 // 2
 
-var serverResponse: (Int, String?, String?) = (200, "ОК", "Error")
-var (statusCode, message, errorMessage) = serverResponse
+var serverResponse: (statusCode: Int, message: String?, errorMessage: String?) = (200, "ОК", "Error")
 
-if 200..<300 ~= statusCode {
-    print(message ?? "Ok")
+if 200..<300 ~= serverResponse.statusCode {
+    print(serverResponse.message ?? "Ok")
 } else {
-    print(errorMessage ?? "nil")
+    print(serverResponse.errorMessage ?? "nil")
 }
 
-var (_, messageTwo, errorMessageTwo) = serverResponse
-messageTwo = nil
-errorMessageTwo = nil
+var (_, message, errorMessage) = serverResponse
+message = nil
+errorMessage = nil
 
-if let message = messageTwo {
+if let message = message {
     print(message)
-} else if let error = errorMessageTwo {
+} else if let error = errorMessage {
     print("Error")
 } else {
     "both nil"
 }
 
 // 3
-
-var studentOne: (name: String, carNumber: Int?, controlScore: Int?)
-var studentTwo: (name: String, carNumber: Int?, controlScore: Int?)
-var studentThree: (name: String, carNumber: Int?, controlScore: Int?)
-var studentFour: (name: String, carNumber: Int?, controlScore: Int?)
-var studentFive: (name: String, carNumber: Int?, controlScore: Int?)
+typealias Student = (name: String, carNumber: Int?, controlScore: Int?)
+var studentOne: Student
+var studentTwo: Student
+var studentThree: Student
+var studentFour: Student
+var studentFive: Student
 
 studentOne = ("Pavel", 200, nil)
 studentTwo = ("Ron", nil, 2)
@@ -82,16 +81,16 @@ let students = [studentOne, studentTwo, studentThree, studentFour, studentFive]
 
 print("Students list:")
 for (index, student) in students.enumerated() {
-    var str = "\(index + 1).  Name: \(student.0).\n\t"
+    var str = "\(index + 1).  Name: \(student.name)\n\t"
     if let numberCar = student.carNumber {
-        str += "Car: The student has a car. Its number is \(numberCar).\n\t"
+        str += "Car: The student has a car. Its number is \(numberCar)\n\t"
     } else {
-        str += "Car: The student doesn't have a car.\n\t"
+        str += "Car: The student doesn't have a car\n\t"
     }
     if let controlScore = student.controlScore {
         str += "Last test: The student was on the last test. His control score is \(controlScore)"
     } else {
-        str += "Last test: The student was not on the last test "
+        str += "Last test: The student was not on the last test"
     }
     print(str)
 }
