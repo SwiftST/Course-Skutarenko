@@ -26,7 +26,10 @@ import Foundation
 let myResults = (pushUps: 33, pullUps: 10, sitUps: 30)
 
 // 2
-print("My results:\n1.maximum number of push-ups - \(myResults.pushUps)\n2.maximum number of pull-ups - \(myResults.1)\n3.maximim number of sit-ups - \(myResults.sitUps)")
+print("My results:\n" +
+      "1.maximum number of push-ups - \(myResults.pushUps)\n" +
+      "2.maximum number of pull-ups - \(myResults.1)\n" +
+      "3.maximim number of sit-ups - \(myResults.sitUps)")
 
 // 3
 var tempTuple = myResults
@@ -34,7 +37,10 @@ tempTuple.pushUps = 25
 tempTuple.pullUps = 5
 tempTuple.sitUps = 40
 let wifeResults = tempTuple
-print("My wife results:\n1.maximum number of push-ups - \(wifeResults.pushUps)\n2.maximum number of pull-ups - \(wifeResults.1)\n3.maximim number of sit-ups - \(wifeResults.sitUps)")
+print("My wife results:\n" +
+      "1.maximum number of push-ups - \(wifeResults.pushUps)\n" +
+      "2.maximum number of pull-ups - \(wifeResults.1)\n" +
+      "3.maximim number of sit-ups - \(wifeResults.sitUps)")
 
 // 4
 let differenceWithUs = (pushUps: myResults.0 - wifeResults.0, pullUps: myResults.1 - wifeResults.1, sitUps: myResults.2 - wifeResults.2)
