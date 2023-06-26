@@ -46,17 +46,17 @@ print("I was born in the \(quarter)")
 // 4
 let coordinate = (x: "d", y: 6)
 let x = "abcdefgh"
-if x.contains(coordinate.x) {
-    var count = 1
-    for i in x {
-        if i == Character(coordinate.x) {
-            let color = (count + coordinate.y) % 2 == 0 ? "black" : "white"
-            print("Color fiaeld is \(coordinate.x)\(coordinate.y) is \(color)")
-            break
-        }
-        count += 1
+
+var count = 1
+for i in x {
+    if i == Character(coordinate.x) {
+        let color = (count + coordinate.y) % 2 == 0 ? "black" : "white"
+        print("Color fiaeld is \(coordinate.x)\(coordinate.y) is \(color)")
+        break
     }
+    count += 1
 }
+
 
 
 
