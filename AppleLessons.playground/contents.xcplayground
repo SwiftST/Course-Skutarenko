@@ -3,5 +3,6 @@
     <pages>
         <page name='Swift tour'/>
         <page name='Basics'/>
+        <page name='Basic operators'/>
     </pages>
 </playground>
