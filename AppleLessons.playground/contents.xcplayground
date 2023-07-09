@@ -4,5 +4,6 @@
         <page name='Swift tour'/>
         <page name='Basics'/>
         <page name='Basic operators'/>
+        <page name='String'/>
     </pages>
 </playground>

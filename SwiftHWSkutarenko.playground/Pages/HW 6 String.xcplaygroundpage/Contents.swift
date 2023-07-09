@@ -81,7 +81,7 @@ let searchSymbol: Character = "k"
 
 for (index, char) in alphabet.enumerated() {
     if char == searchSymbol {
-        print("Символ \(char) находится под индексом \(index + 1)")
+        print("Символ \(char) находится под индексом \(index)")
     }
 }
 
