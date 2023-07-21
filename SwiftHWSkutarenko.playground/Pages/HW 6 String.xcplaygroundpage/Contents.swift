@@ -25,14 +25,13 @@ var result = ""
 let stringInt = [strOne, strTwo, strThree, strFour, strFive]
 
 for (index, string) in stringInt.enumerated() {
-    let temp = sum
     sum += Int(string) ?? 0
     if index == 0, Int(string) != nil {
         result += String(sum)
     } else if index == 0, Int(string) == nil {
         result += "nil"
     } else if 1... ~= index, Int(string) != nil {
-        result += " + \(sum - temp)"
+        result += " + \(Int(string)!)"
     } else {
         result += " + nil"
     }
