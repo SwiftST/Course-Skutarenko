@@ -6,5 +6,7 @@
         <page name='Basic operators'/>
         <page name='String'/>
         <page name='Arrays'/>
+        <page name='Dictionary'/>
+        <page name='Control flow'/>
     </pages>
 </playground>
