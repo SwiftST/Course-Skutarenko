@@ -8,5 +8,6 @@
         <page name='Arrays'/>
         <page name='Dictionary'/>
         <page name='Control flow'/>
+        <page name='Functions'/>
     </pages>
 </playground>
