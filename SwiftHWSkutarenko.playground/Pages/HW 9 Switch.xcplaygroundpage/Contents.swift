@@ -17,7 +17,6 @@ for char in someString {
         countSymbol.numbers += 1
     default:
         countSymbol.other += 1
-        break
     }
 }
 print("В строке someString:\nVowels = \(countSymbol.vowels)\nConsonents = \(countSymbol.consonants)\nNumbers = \(countSymbol.numbers)\nOther = \(countSymbol.other)")
