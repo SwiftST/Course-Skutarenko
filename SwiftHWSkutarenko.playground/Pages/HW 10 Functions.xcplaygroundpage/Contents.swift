@@ -47,11 +47,7 @@ reverseArray(sequence: 1, 2, 4, 55, 2)
 // 4. Сделать тоже самое что и в третьем задании только вместо возврата использовать inout параметры. (что будет если убрать inout, изменится ли массив)
 var numbers = [33, 45, 3, 11, 66]
 func reverseArray(array: inout [Int]) {
-    let numbers = array
-    array = []
-    for number in numbers {
-        array.insert(number, at: 0)
-    }
+    array = reverseArray(array: array)
 }
 reverseArray(array: &numbers)
 numbers
