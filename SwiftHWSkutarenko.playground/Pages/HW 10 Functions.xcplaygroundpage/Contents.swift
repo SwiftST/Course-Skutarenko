@@ -58,22 +58,19 @@ let string = "Hello! My name is Pavel. I'm from Russia. I'm 32 years old. I'm ma
 
 func convertString(text: String) -> String {
     func convertNumber(number: Character) -> String {
-        var result = ""
-        switch number {
-        case "1": result = "OnE"
-        case "2": result = "twO"
-        case "3": result = "thrEE"
-        case "4": result = "fOUr"
-        case "5": result = "fIvE"
-        case "6": result = "sIx"
-        case "7": result = "sEvEn"
-        case "8": result = "EIght"
-        case "9": result = "nInE"
-        case "0": result = "zErO"
-        default:
-            break
-        }
-        return result
+        let numbers: [Character: String] = [
+        "1": "OnE",
+        "2": "twO",
+        "3": "thrEE",
+        "4": "fOUr",
+        "5": "fIvE",
+        "6": "sIx",
+        "7": "sEvEn",
+        "8": "EIght",
+        "9": "nInE",
+        "0": "zErO"
+        ]
+        return numbers[number]!
     }
     var result = ""
     for char in text {
@@ -95,10 +92,35 @@ func convertString(text: String) -> String {
 }
 convertString(text: string)
 
+// рекурсия - функция которая вызывает сама себя
+// первое что нужно сделать - определиить точку выхода
+// пример с факториалом числа
 
+// 3! = 1 * 2 * 3
 
+func fact(number: Int) -> Int {
+    if number <= 1 {
+        return 1
+    }
+    
+    var f = 1
+    for i in 2...number {
+        f *= i
+    }
+    return f
+}
 
+fact(number: 3)
 
+func factTwo(number: Int) -> Int {
+    if number <= 1 {
+        return 1
+    }
+    
+    return number * factTwo(number: number - 1)
+}
+
+factTwo(number: 4)
 
 
 
