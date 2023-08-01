@@ -9,5 +9,6 @@
         <page name='Dictionary'/>
         <page name='Control flow'/>
         <page name='Functions'/>
+        <page name='Closures'/>
     </pages>
 </playground>

@@ -47,8 +47,6 @@ let max = getInt(numbers: numbers) { $0 > $1! }
 let someSting = "asbdsjvbsnvjksndv123"
 let char: Character = "a"
 
-
-
 func getChar(in string: String, closure: (String, String) -> Bool) -> String {
     guard !string.isEmpty else {
         return ""
