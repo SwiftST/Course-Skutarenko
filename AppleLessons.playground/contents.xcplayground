@@ -10,5 +10,6 @@
         <page name='Control flow'/>
         <page name='Functions'/>
         <page name='Closures'/>
+        <page name='Enimerations'/>
     </pages>
 </playground>
