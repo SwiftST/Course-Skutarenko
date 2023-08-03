@@ -169,13 +169,4 @@ makeAMove(figure: &figures[1], new: (x: "c", y: 8))
 printBattlefield(figures: figures)
 
 
-
-
-
-
-
-
-
-
-
 //: [Next](@next)
