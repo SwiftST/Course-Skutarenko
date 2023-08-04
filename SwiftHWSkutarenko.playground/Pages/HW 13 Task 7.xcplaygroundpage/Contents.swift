@@ -33,10 +33,9 @@ class Figure {
     }
     
     var label: String {
-        var startIndex = 0x2654
-        startIndex += Name.allCases.firstIndex(of: name)!
-        startIndex += color == .white ? 0 : 6
-        return String(Unicode.Scalar(UnicodeScalar(startIndex)!))
+        var startIndex = 0x2654 + Name.allCases.firstIndex(of: name)!
+        startIndex += color == .white ? 0 : Name.allCases.count
+        return String(UnicodeScalar(startIndex)!)
     }
     
     init(name: Name, color: Color, _ position: Position) {
