@@ -13,5 +13,7 @@
         <page name='Enumerations'/>
         <page name='Classes and Structures'/>
         <page name='Properies'/>
+        <page name='Properties part 2'/>
+        <page name='Properties part 3'/>
     </pages>
 </playground>
