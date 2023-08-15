@@ -25,23 +25,58 @@ import Foundation
 //    }
 //}
 
+
+
+struct Room {
+    static let weight = 5
+    static let height = 5
+    
+    static let finishX = 3
+    static let finishY = 5
+    let finishSymbol = "🚪"
+    
+    static func checkCoord(x: Int, y: Int) -> Bool {
+        1...weight ~= x && 1...height ~= y
+    }
+    
+    func printRoomAnd(person: Person, and box: Box) {
+        for y in (1...Room.height).reversed() {
+            for x in 1...Room.weight {
+                if person.x == x && person.y == y  {
+                    print("\(person.symbol)", terminator: "")
+                } else if box.x == x && box.y == y {
+                    print("\(box.symbol)", terminator: "")
+                } else if Room.finishX == x && Room.finishY == y {
+                    print(finishSymbol, terminator: "")
+                } else {
+                    print("⬜️", terminator: "")
+                }
+            }
+            print("")
+        }
+        print("")
+    }
+}
+
+enum Direction {
+    case Left
+    case Right
+    case Up
+    case Down
+}
 class Box {
     
     var x: Int {
-        didSet(oldX) {
-            guard 1...Room.weight ~= x else {
-                x = oldX
-                print("Ход не возможен")
-                return
+        didSet {
+            if x == Room.finishX && y == Room.finishY {
+                print("You win!!!")
             }
         }
     }
     var y: Int {
-        didSet(oldY) {
-            guard 1...Room.height ~= y else {
-                y = oldY
-                print("Ход не возможен")
-                return
+        didSet {
+            if x == Room.finishX && y == Room.finishY {
+                print("You win!!!")
             }
         }
     }
@@ -71,66 +106,16 @@ class Box {
         }
     }
 }
-
-struct Room {
-    static let weight = 5
-    static let height = 5
-    
-    static func checkCoord(x: Int, y: Int) -> Bool {
-        1...weight ~= x && 1...height ~= y
-    }
-    
-    func printRoomAnd(person: Person, and box: Box) {
-        for y in (1...Room.height).reversed() {
-            for x in 1...Room.weight {
-                if person.x == x && person.y == y  {
-                    print("\(person.symbol)", terminator: "")
-                } else if box.x == x && box.y == y {
-                    print("\(box.symbol)", terminator: "")
-                } else {
-                    print("⬜️", terminator: "")
-                }
-            }
-            print("")
-        }
-        print("")
-    }
-}
-
-enum Direction {
-    case Left
-    case Right
-    case Up
-    case Down
-}
-
 struct Person {
     
-    var x: Int = 1 {
-        didSet(oldX) {
-            guard 1...Room.weight ~= x else {
-                x = oldX
-                print("Ход не возможен")
-                return
-            }
-        }
-    }
-    var y: Int = 1 {
-        didSet(oldY) {
-            guard 1...Room.height ~= y else {
-                y = oldY
-                print("Ход не возможен")
-                return
-            }
-        }
-    }
+    var x: Int = 1
+    var y: Int = 1
     let symbol = "🐥"
-    
     
     mutating func movePersonBy(direction: Direction, box: Box) {
         switch direction {
         case .Left where Room.checkCoord(x: x - 1, y: y):
-            if checkCoordBox(box, x: self.x - 1, y: self.y) {
+            if equalCoordBox(box, x: self.x - 1, y: self.y) {
                 if box.moveBox(direction: direction) {
                     self.x -= 1
                     break
@@ -140,7 +125,7 @@ struct Person {
             }
             self.x -= 1
         case .Right where Room.checkCoord(x: self.x + 1, y: self.y):
-            if checkCoordBox(box, x: self.x + 1, y: self.y) {
+            if equalCoordBox(box, x: self.x + 1, y: self.y) {
                 if box.moveBox(direction: direction) {
                     self.x += 1
                     break
@@ -151,7 +136,7 @@ struct Person {
             }
             self.x += 1
         case .Up where Room.checkCoord(x: self.x, y: self.y + 1):
-            if checkCoordBox(box, x: self.x, y: self.y + 1) {
+            if equalCoordBox(box, x: self.x, y: self.y + 1) {
                 if box.moveBox(direction: direction) {
                     self.y += 1
                     break
@@ -162,7 +147,7 @@ struct Person {
             }
             self.y += 1
         case .Down where Room.checkCoord(x: self.x, y: self.y - 1):
-            if checkCoordBox(box, x: self.x, y: self.y - 1) {
+            if equalCoordBox(box, x: self.x, y: self.y - 1) {
                 if box.moveBox(direction: direction) {
                     self.y -= 1
                     break
@@ -177,7 +162,7 @@ struct Person {
             break
         }
     }
-    func checkCoordBox(_ box: Box, x: Int, y: Int) -> Bool {
+    func equalCoordBox(_ box: Box, x: Int, y: Int) -> Bool {
         box.x == x && box.y == y ? true : false
     }
 }
