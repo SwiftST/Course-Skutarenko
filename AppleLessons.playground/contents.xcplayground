@@ -6,7 +6,9 @@
         <page name='Basic operators'/>
         <page name='String'/>
         <page name='Arrays'/>
+        <page name='Set'/>
         <page name='Dictionary'/>
+        <page name='Methods'/>
         <page name='Control flow'/>
         <page name='Functions'/>
         <page name='Closures'/>
@@ -15,6 +17,5 @@
         <page name='Properies'/>
         <page name='Properties part 2'/>
         <page name='Properties part 3'/>
-        <page name='Methods'/>
     </pages>
 </playground>

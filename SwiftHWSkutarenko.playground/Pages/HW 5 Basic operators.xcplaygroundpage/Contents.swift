@@ -51,7 +51,7 @@ var count = 1
 for i in x {
     if i == Character(coordinate.x) {
         let color = (count + coordinate.y) % 2 == 0 ? "black" : "white"
-        print("Color fiaeld is \(coordinate.x)\(coordinate.y) is \(color)")
+        print("Color field is \(coordinate.x)\(coordinate.y) is \(color)")
         break
     }
     count += 1

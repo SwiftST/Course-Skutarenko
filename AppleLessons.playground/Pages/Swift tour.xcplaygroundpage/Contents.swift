@@ -96,11 +96,12 @@ var n = 2
 while n < 100 {
     n *= 2
 }
+print(n)
 
 repeat {
     n *= 2
 } while n < 100
-
+print(n)
 
 
 var firstLoopValue = 0
@@ -135,6 +136,7 @@ func calculateStatistics(scores: [Int]) -> (min: Int, max: Int, sum: Int) {
 let tupleStatistics = calculateStatistics(scores: [2, 33, 55, 2, 11, 3])
 tupleStatistics.sum
 tupleStatistics.min
+tupleStatistics.max
 
 func returnFifteen() -> Int {
     var a = 10
@@ -156,6 +158,7 @@ func makeIncrement() -> ((Int) -> Int) {
 }
 
 var increment = makeIncrement()
+increment(1)
 
 func hasAnyMatches(list: [Int], condition: (Int) -> Bool) -> Bool {
     for item in list {
@@ -170,13 +173,14 @@ hasAnyMatches(list: [2, 345, 223, 22]) { a in
     a > 100
 }
 var numbers = [223, 22, 21, 67]
-numbers.map { a in
+let someMapValues = numbers.map { a in
     return a / 100
 }
+print(someMapValues)
 var someNum = numbers.map { a in
     a % 2 == 0 ? a : 0
 }
-someNum
+print(someNum)
 
 let sortedNumbers = numbers.sorted {
     $0 > $1
@@ -270,8 +274,8 @@ class EquilateralTringle: NamedShape {
         get {
             3 * sideLength
         }
-        set {
-            sideLength = newValue / 3
+        set(newPerimetr) {
+            sideLength = newPerimetr / 3
         }
     }
     
@@ -292,6 +296,7 @@ class EquilateralTringle: NamedShape {
 var triangle = EquilateralTringle(sideLength: 3, name: "my Triangle")
 
 triangle.perimetr
+triangle.sideLength
 triangle.perimetr = 25
 triangle.sideLength
 
@@ -318,9 +323,10 @@ print(triangleAndSquare.square.sideLength)
 print(triangleAndSquare.triangle.sideLength)
 triangleAndSquare.square = Square(sideLength: 5, name: "Larger square")
 print(triangleAndSquare.square.sideLength)
+print(triangleAndSquare.triangle.sideLength)
 print(triangleAndSquare.square.name)
 
-// Опциональные цепочки. Когда работаем с опциональными значениями, вы можете написать ? перед такими операциями как: методы, свойтсва или индексаторы. Если значение перед ? - nil, то все что после игнорируется и значение всего выражения становится nil. В противном случае опциональное значение извлекается и все что после ? выполняется
+// Опциональные цепочки. Когда работаем с опциональными значениями, вы можете написать ? перед такими операциями как: методы, свойства или индексаторы. Если значение перед ? - nil, то все что после игнорируется и значение всего выражения становится nil. В противном случае опциональное значение извлекается и все что после ? выполняется
 var optionalSquare: Square? = Square(sideLength: 2.5, name: "optional square")
 let sideLength = optionalSquare?.sideLength
 optionalSquare = nil
@@ -346,27 +352,29 @@ enum Rank: Int, CaseIterable {
             return String(self.rawValue)
         }
     }
+    
+    // Напишите функцию, сравнивающую два Rank значения, с помощью сравнения их исходных (raw) значений.
+    func compareTwoRank(another: Rank) {
+        switch (self.rawValue, another.rawValue) {
+        case let (x, y) where x > y:
+            print(self.simpleDescription() + " more than " + another.simpleDescription())
+        case let (x, y) where x < y:
+            print(self.simpleDescription() + " less than " + another.simpleDescription())
+        default:
+            print(self.simpleDescription() + " equal " + another.simpleDescription())
+        }
+    }
 }
 
 Rank.allCases
 
-let ace = Rank.ace
+var ace = Rank.ace
+//ace = Rank.eight
 ace.simpleDescription()
 let aceRawValue = ace.rawValue
 let king = Rank.king
 
-// Напишите функцию, сравнивающую два Rank значения, с помощью сравнения их исходных (raw) значений.
-func compareTwoRank(_ one: Rank, and second: Rank) {
-    switch (one.rawValue, second.rawValue) {
-    case let (x, y) where x > y:
-        print("one more than second")
-    case let (x, y) where x < y:
-        print("one less than second")
-    default:
-        print("one equal second")
-    }
-}
-compareTwoRank(ace, and: king)
+ace.compareTwoRank(another: king)
 
 // Используйте инициализатор init?(rawValue:) для того, чтобы создать экземпяр перечисления из исходного значения
 
@@ -432,19 +440,23 @@ struct Card {
 }
 let threeOfSpades = Card(rank: .four, suit: .spades)
 print(threeOfSpades.simpleDescription())
-threeOfSpades.returnFullDeck()
+let fullDeck = threeOfSpades.returnFullDeck()
+for (rank, suit) in fullDeck {
+    print(String(rank.simpleDescription()) + " " + String(suit.simpleDescription()))
+}
 
 // Протоколы и расширения
 // для обявления протокла используется оператор protocol
 protocol ExampleProtocol {
     var simpleDescription: String { get }
+    var someProperty: Int { get }
     mutating func adjust()
 }
 
 // Классы, перечисления и структуры могут соответствовать протоколам (или быть подписанными на протокол)
 
 class SimpleClass: ExampleProtocol {
- 
+    var someProperty: Int = 0
     var simpleDescription: String = "A very simple class"
     var anotherProperty: Int = 4545
     
@@ -458,13 +470,15 @@ someSimpleClass.adjust()
 let description = someSimpleClass.simpleDescription
 
 struct SimpleStructure: ExampleProtocol {
-
+    var someProperty: Int = 0
     var simpleDescription: String = "A simple structure"
     
     mutating func adjust() {
         simpleDescription += " (adjusted)"
     }
 }
+// Добавьте дополнительное требование в протокол ExampleProtocol. Какие изменения Вам нужно внести в SimpleClass и SimpleStructure, чтобы они соответствовали требованиям этого протокола?
+// Необходимо добавить новое требование в реализации классов и структур, которые соответствуют данному протоколу
 
 var someSimpleStructure = SimpleStructure()
 someSimpleStructure.adjust()
@@ -473,6 +487,10 @@ someSimpleStructure.simpleDescription
 // Для объявления расширения используется оператор extension. Расг=ширение используется для того чтобы добавить новый функционал для существующего типа, такой как объявление новых методов и вычисляемых свойст. Возможно добавить расширения для добавления совмсетимости с протоколом типу, который объявлен в другом месте или даже типу который вы импортировали из библиотеки или фреймворка
 
 extension Int: ExampleProtocol {
+    var someProperty: Int {
+        return 0
+    }
+    
     var simpleDescription: String {
         return "The number is \(self)"
     }
@@ -522,8 +540,10 @@ func send(job: Int, toPrinter printerName: String) throws -> String {
 
 // можно использовать немколько блоков catch для обработки различных ошибок. Вы пишете некий шаблон после каждого блока catch, точно так же как в switch
 do {
-    let printerResponse = try send(job: 1040, toPrinter: "Pfe")
+    let printerResponse = try send(job: 1040, toPrinter: "Never has tone")
     print(printerResponse)
+} catch PrinterError.noToner {
+    print("no tonner")
 } catch PrinterError.onFire {
     print("I'll just put this over here, with the rest of the fire.")
 } catch let printerError as PrinterError {
@@ -553,7 +573,7 @@ func fridgeContains(_ food: String) -> Bool {
     let result = fridgeContent.contains(food)
     return result
 }
-fridgeContains("banana")
+fridgeContains("milk")
 //print(fridgeIsOpen)
 
 

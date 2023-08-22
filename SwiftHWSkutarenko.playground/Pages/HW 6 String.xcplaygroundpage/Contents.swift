@@ -15,7 +15,7 @@ import Foundation
  но в первом случае используйте интерполяцию строк, а во втором конкатенацию
 */
 
-let strOne = "ad"
+let strOne = "1"
 let strTwo = "11"
 let strThree = "1s"
 let strFour = "18"
@@ -30,7 +30,7 @@ for (index, string) in stringInt.enumerated() {
         result += String(sum)
     } else if index == 0, Int(string) == nil {
         result += "nil"
-    } else if 1... ~= index, Int(string) != nil {
+    } else if Int(string) != nil {
         result += " + \(Int(string)!)"
     } else {
         result += " + nil"
@@ -81,6 +81,7 @@ let searchSymbol: Character = "k"
 for (index, char) in alphabet.enumerated() {
     if char == searchSymbol {
         print("Символ \(char) находится под индексом \(index)")
+        break
     }
 }
 

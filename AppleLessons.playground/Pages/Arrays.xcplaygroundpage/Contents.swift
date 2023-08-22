@@ -57,7 +57,7 @@ shoppingList.insert("Maple Syrup", at: 0)
 let mapleSyrup = shoppingList.remove(at: 0)
 
 // При попытке получить доступ или изменить значение индекса, который находится за пределами существующих границ массива, будет ошибка исполнения.
-
+//shoppingList[6]
 firstItem = shoppingList[0]
 
 // удаление последнего элемента массива
@@ -70,6 +70,10 @@ for item in shoppingList {
 for (index, value) in shoppingList.enumerated() {
     print("Index \(index + 1): \(value)")
 }
+
+// array slice
+var shoppingOne = shoppingList[1...3]
+type(of: shoppingOne)
 
 
 

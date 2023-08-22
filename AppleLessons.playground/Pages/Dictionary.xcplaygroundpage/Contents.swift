@@ -10,8 +10,8 @@ import Foundation
 
 // Создание пустого словаря (синтаксис инициализатора)
 var namesOfIntegers = [Int: String]()
-// c помощью литерала словаря
 namesOfIntegers[16] = "sixteen"
+// c помощью литерала словаря
 namesOfIntegers = [:]
 
 // создание словаря с литералом словаря

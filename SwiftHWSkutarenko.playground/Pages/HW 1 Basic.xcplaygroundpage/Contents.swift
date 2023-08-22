@@ -18,7 +18,7 @@ let firstName = "Pavel"
 let lastName = "Zubrilov"
 let growth = 182
 let weight = 80
-let age = 32
+let age = 33
 
 print("Full name student - \(firstName) \(lastName)\nage - \(age) years old\nhis weight - \(weight)kg\nhis growth - \(growth)sm")
 

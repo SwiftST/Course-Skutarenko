@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='ios' display-mode='raw' buildActiveScheme='true' importAppTypes='true'>
+    <pages>
+        <page name='Lesson 1 Basic'/>
+        <page name='Lesson 2 Work with basic types'/>
+        <page name='Lesson 3 Tuples'/>
+        <page name='Lesson 4 Optional types'/>
+        <page name='Lesson 5 Basic Operators'/>
+        <page name='Lesson 6 String'/>
+        <page name='Lesson 7 Arrays'/>
+        <page name='Lesson 8 Dictionary'/>
+        <page name='Lesson 9 Switch'/>
+        <page name='Lesson 10 Functions'/>
+        <page name='Lesson 11 Closures'/>
+        <page name='Lesson 12 Enumerations'/>
+        <page name='Lesson 13 Class and Struct'/>
+        <page name='Lesson 14 Properties'/>
+        <page name='Lesson 15 Properties Types'/>
+        <page name='Lesson 16 Methods'/>
+        <page name='Lesson 17 Subscripts'/>
+    </pages>
+</playground>

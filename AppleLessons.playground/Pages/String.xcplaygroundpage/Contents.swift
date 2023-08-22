@@ -3,8 +3,8 @@
 import Foundation
 
 // MARK: String
-// String в Swift имеет быструю и своременную реализацию. Каждая строка состоит из независимых от кодировки символов Unicode, и обеспечивает поддержку доступа к этим символам в различных Unicode представлениях
-// Тип String в Swift бесшовно сшит с классом NSString из фреймворка Foundation. 
+// String в Swift имеет быструю и современную реализацию. Каждая строка состоит из независимых от кодировки символов Unicode, и обеспечивает поддержку доступа к этим символам в различных Unicode представлениях
+// Тип String в Swift бесшовно сшит с классом NSString из фреймворка Foundation.
 
 // MARK: Строковые литералы
  // Строковые литералы - это фиксированная последовательность символов, окруженная парой двойных ковычек
@@ -19,6 +19,7 @@ please your Majesty? he asked.
 "Begin at the beginning," the King said gravely, "and go on
 till you come to the end; then stop."
 """
+//print(quotation)
 
 let singleLineString = "These are the same."
 let multilineString = """
@@ -33,7 +34,7 @@ please your Majesty? he asked.
 "Begin at the beginning," the King said gravely, "and go on \
 till you come to the end; then stop."
 """
-
+//print(softWrappedQuotation)
 // Для того чтобы слздать литерал строки, котрый начинается и заканчивается символом возврата каретки (\r), напишите пустую строчку в самом начале и в конце литерала строки:
 let lineBreaks = """
 
@@ -64,7 +65,8 @@ print(lineWithIdentation)
 // Произвольные скалярные величины Юникода, записанные в виде \u{n}, где n - 1-8 значное шестнадцатеричное число со значением, равным действительной точке кода Юникода
 
 let wiseWords = "\"Imagination is more important than knowledge\" - Einstein"
-let example = "\tdsvsv\nWhat is it?\r\'regeg\'"
+print(wiseWords)
+let example = "\tdsvsv\rWhat is it?\r\'regeg\'"
 print(example)
 let dollarSign = "\u{24}"
 let blackHeart = "\u{2665}"
@@ -79,7 +81,7 @@ print(threeDoubleQoutes)
 
 // MARK: Расширенные разделители строк
 // Вы можете поместить строковый литерал внутрь расширенного разделителя, чтобы включить в строку специальные символы, не вызывая эффекта самих этих символов.
-var someStringOne = #"Line1\nL"ine2"#
+var someStringOne = #"Line1\nLine2"#
 print(someStringOne)
 // Если нужен эффект специального символа, то нужно сопоставить количество знаков (#) в строке после символа экранирования (\)
 someStringOne = #"Line1\#nLine2"#
@@ -197,6 +199,10 @@ word += "\u{301}"
 word.count
 word += "\u{20DD}"
 word.count
+(word as NSString).length
+for (index, letter) in word.enumerated() {
+    print("\(index + 1) \(letter)")
+}
 
 // Расширенный набор графем может состоять из одного или более скалярных величин Юникода. Это означает, что различные символы, и различное отображение одного и того же символа, могут потребовать разных объемов памяти для хранения. Из-за этого символы в Swift не занимают одинаковый объем памяти в строке. В результате этого, количество символов в строке не может быть подсчитано без итерации в строке, для определения границ расширенного набора графем.
 // Свойство length у NSString, основывается на числе 16-битовых блоков кода в UTF-16 представлении строки, а не количестве расширенного набора графем внутри строки.
@@ -219,7 +225,7 @@ let greeting = "Guten Tag!"
 greeting[greeting.startIndex]
 greeting[greeting.index(before: greeting.endIndex)]
 greeting[greeting.index(after: greeting.startIndex)]
-let index = greeting.index(greeting.startIndex, offsetBy: 7)
+let index = greeting.index(greeting.startIndex, offsetBy: 8)
 greeting[index]
 
 // indeces - свойство для создания Range всех индексов, используемых для доступа к отдельным символам строки
@@ -261,7 +267,7 @@ welcomeOne
 
 let greetingOne = "Hello, world!"
 let indexOne = greetingOne.firstIndex(of: ",") ?? greetingOne.endIndex
-let begining = greetingOne[..<indexOne]
+var begining = greetingOne[..<indexOne]
 print(type(of: begining))
 // конвертация подстроки в строку для более длительного хранения
 let newString = String(begining)

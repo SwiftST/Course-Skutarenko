@@ -39,7 +39,9 @@ print("\(base) в степени \(power) равно \(answer)")
 
 let minutes = 60
 for tickMark in 0..<minutes {
-    
+    if tickMark % 10 == 0 {
+        print(tickMark, terminator: " ")
+    }
 }
 
 // для того чтобы пропустить лишние деление (например через каждые 5 минут) нужна функция stride(from:to:by) не включая верхнюю границу
@@ -309,7 +311,7 @@ if let integerValue = possibleIntegerValue {
 }
 
 // MARK: оператор fallthrough
-// опертор fallthrough позволяет провалиться в следующий кейс игнорируя его условие
+// оператор fallthrough позволяет провалиться в следующий кейс игнорируя его условие
 
 let integerToDescribe = 5
 var description = "The number \(integerToDescribe) is"

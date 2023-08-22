@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" standalone="yes"?>
+<playground version='6.0' target-platform='macos' display-mode='raw' buildActiveScheme='true' importAppTypes='true'>
+    <pages>
+        <page name='HW 1 Basic'/>
+        <page name='HW 2 work with basic types'/>
+        <page name='HW 3 Tuples'/>
+        <page name='HW 4 Optional types'/>
+        <page name='HW 5 Basic operators'/>
+        <page name='HW 6 String'/>
+        <page name='HW 7 Arrays'/>
+        <page name='HW 8 Dictionary'/>
+        <page name='HW 9 Switch'/>
+        <page name='HW 10 Functions'/>
+        <page name='HW 11 Closures'/>
+        <page name='HW 12 Enum'/>
+        <page name='HW 13 Class and Struct'/>
+        <page name='HW 13 Task 7'/>
+        <page name='HW 14 Properties'/>
+        <page name='HW 15 Property type'/>
+        <page name='HW 16 Methods'/>
+        <page name='HW 17 Subscripts'/>
+    </pages>
+</playground>

@@ -19,20 +19,22 @@ let nameOfMonth = [
     "November",
     "December"
 ]
-var months: [(String, Int)] = []
+var monthsAndDays: [(month: String, day: Int)] = []
 
 for index in 0..<nameOfMonth.count {
     print("\(nameOfMonth[index]) - \(daysInMonth[index])")
-    months += [(nameOfMonth[index], daysInMonth[index])]
+    monthsAndDays += [(nameOfMonth[index], daysInMonth[index])]
 }
+monthsAndDays[0].month
+monthsAndDays[0].day
 
-for (month, days) in months.reversed() {
+for (month, days) in monthsAndDays.reversed() {
     print("\(month) - \(days)")
 }
 
 let date = (m: "Octomber", d: 24)
 var result = 0
-for (month, days) in months {
+for (month, days) in monthsAndDays {
     if month == date.m {
         result += date.d - 1
         break
@@ -46,6 +48,7 @@ result
 // 2. Создать массив опциональный Int? в цикле посчитать сумму. Сделать это несколькими способами. Первый используя Optional binding, второй способ - используя force unwrapping, третий - используя оператор объединения по nil (??)
 
 let numbers = [4, nil, 22, 3, nil, 50]
+// Optional binding
 var sum = 0
 for number in numbers {
     if let num = number {
@@ -53,6 +56,7 @@ for number in numbers {
     }
 }
 sum
+// Forced unwrapping
 sum = 0
 for number in numbers {
     if number != nil {
@@ -60,6 +64,7 @@ for number in numbers {
     }
 }
 sum
+// ??
 sum = 0
 for number in numbers {
     sum += number ?? 0
