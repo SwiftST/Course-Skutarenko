@@ -53,7 +53,7 @@ for tickMark in stride(from: 0, to: minutes, by: minuteInterval) {
 // функция stride(from:through:by) включает верхнюю границу
 let hours = 12
 let hourInterval = 3
-for tickMark in stride(from: 3, through: hourInterval, by: hours) {
+for tickMark in stride(from: 3, through: hours, by: hourInterval) {
     print(tickMark)
 }
 
@@ -135,6 +135,48 @@ if temperatureInFahrenheit <= 32 {
     print("It's really warm. Don't forget to wear sunscreen")
 }
 
+let temperatureInCelsius = 25
+var weatherAdvice = String()
+if temperatureInCelsius < 0 {
+    weatherAdvice = "It's very cold. Consider wearing a scarf."
+} else if temperatureInCelsius > 30 {
+    weatherAdvice = "It's really warm. Don't forget to wear sunscreen"
+} else {
+    weatherAdvice = "It's not that cold. Wear a t-shirt"
+}
+print(weatherAdvice)
+
+// другой способ записать выражение выше более кратко
+weatherAdvice = if temperatureInCelsius < 0 {
+    "It's very cold. Consider wearing a scarf."
+} else if temperatureInCelsius > 30 {
+    "It's really warm. Don't forget to wear sunscreen"
+} else {
+    "It's not that cold. Wear a t-shirt"
+}
+
+// в такой записи все ветви инструкции if должны содержать выражения одного типа. Swift проверяет каждую ветвь инструкции if отдельно для определения типа. В случае со значением nil swift не может автоматически определить тип данных, так как он может соответствовать нескольким типам сразу, поэтому нужно указывать тип явно
+let freezingWarning: String? = if temperatureInCelsius <= 0 {
+    "It's below freezing. Watch for ice!"
+} else {
+    nil
+}
+freezingWarning
+
+// другой способ записи выражения выше. Это предоставления типа для nil вместо аннотации типа для константы/переменной
+let freezingWarning1 = if temperatureInCelsius <= 0 {
+    "It's below freezing. Watch for ice!"
+} else {
+    nil as String?
+}
+// Выражение if может реагировать на неожиданные сбои, вызывая ошибку или вызывая такую функцию, как fatalError(_:file:line:), которая никогда не возвращается. Например:
+/*let weatherAdvice1 = if temperatureInCelsius > 100 {
+    throw TemperatureError.boiling
+} else {
+    "It's a reasonable temperature."
+}
+*/
+
 // MARK: Инструкция switch
 // инструкция switch подразумевает наличие какого-то значения, которое сравнивается с несколькими возможными шаблонами.
 // каждая инструкция switch должна быть исчерпывающей.
@@ -148,6 +190,16 @@ case "z":
 default:
     print("Some other character")
 }
+// другой способ записи, аналогично оператору if
+let message = switch someCharacter {
+case "a":
+    "The first letter on the alphabet"
+case "z":
+    "The last letter of the alphabet"
+default:
+    "Some other character"
+}
+print(message)
 
 // MARK: Отсутствие case-провалов
 // Инструкция switch прекращает выполнение после нахождения первого соответствия c case и выполнении соответствующего кода в ветке, без необходимости явного вызова break
@@ -382,8 +434,36 @@ if #available(iOS 14, macOS 10.12, *) {
     print("используйте более старые API")
 }
 
+// MARK: Deffered actions
+// Блок отсрочки - запускается после выполнения определенного оператора или функции при выходе из ее области видимости
+var score = 1
+if score < 10 {
+    defer {
+        print(score)
+    }
+    score += 5
+}
 
+if score < 100 {
+    score += 100
+    defer {
+        score -= 100
+    }
+    // Other code that uses the score with its bonus goes here.
+    print(score)
+}
+score
 
+// Если в одной области видимости объявлено несколько defer, то первым будет выполняться последний (то есть в обратном порядке)
+if score < 10 {
+    defer {
+        print(score)
+    }
+    defer {
+        print("The score is:")
+    }
+    score += 5
+}
 
 
 //: [Next](@next)

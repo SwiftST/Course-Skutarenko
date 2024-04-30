@@ -12,7 +12,6 @@ var students = [
     "Mihail Tropin": 4
 ]
 var generalBal = 0
-var averageScore = 0.0
 students.updateValue(4, forKey: "John Smith")
 students["Kolin Varvar"] = 3
 students["Mia Malkova"] = 5
@@ -25,7 +24,7 @@ for student in students {
     print("Student: \(student.key), score: \(student.value)")
     generalBal += student.value
 }
-averageScore = Double(generalBal) / Double(students.count)
+let averageScore = Double(generalBal) / Double(students.count)
 print("Общий бал группы: \(generalBal)\nСредний бал группы: \(averageScore)")
 
 
@@ -64,7 +63,7 @@ var chessCells: [String: Bool] = [:]
 
 for (index, letter) in "abcdefgh".enumerated() {
     for number in 1...8 {
-        chessCells["\(letter)\(number)"] = (index + number) % 2 == 0
+        chessCells["\(letter)\(number)"] = (index + 1 + number) % 2 != 0
         print("Ячейка \(letter)\(number) is \(chessCells["\(letter)\(number)"]! ? "white" : "black")")
     }
 }

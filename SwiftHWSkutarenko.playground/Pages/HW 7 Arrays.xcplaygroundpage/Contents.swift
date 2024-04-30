@@ -20,20 +20,15 @@ let nameOfMonth = [
     "December"
 ]
 var monthsAndDays: [(month: String, day: Int)] = []
-
+let date = (m: "Octomber", d: 24)
+var result = 0
 for index in 0..<nameOfMonth.count {
     print("\(nameOfMonth[index]) - \(daysInMonth[index])")
     monthsAndDays += [(nameOfMonth[index], daysInMonth[index])]
 }
-monthsAndDays[0].month
-monthsAndDays[0].day
-
 for (month, days) in monthsAndDays.reversed() {
     print("\(month) - \(days)")
 }
-
-let date = (m: "Octomber", d: 24)
-var result = 0
 for (month, days) in monthsAndDays {
     if month == date.m {
         result += date.d - 1
