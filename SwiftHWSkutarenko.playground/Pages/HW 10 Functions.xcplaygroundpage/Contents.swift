@@ -40,21 +40,21 @@ func reverseArray(array: [Int]) -> [Int] {
 }
 reverseArray(array: someArray)
 func reverseArray(sequence: Int...) -> [Int] {
-    reverseArray(array: sequence)
+    sequence.reversed()
 }
 reverseArray(sequence: 1, 2, 4, 55, 2)
 
 // 4. Сделать тоже самое что и в третьем задании только вместо возврата использовать inout параметры. (что будет если убрать inout, изменится ли массив)
 var numbers = [33, 45, 3, 11, 66]
 func reverseArray(array: inout [Int]) {
-    array = reverseArray(array: array)
+    array = array.reversed()
 }
 reverseArray(array: &numbers)
 numbers
 
 // 5. Создать функцию, которая будет принимать строку и она будет возвращать строку, в которой все знаки препинания будут убраны, все гласные переведены в заглавные, все согласные переведены в строчные, а цифры изменены на слова (применить switch)
 
-let string = "Hello! My name is Pavel. I'm from Russia. I'm 32 years old. I'm married to Darya. We live in Kemerovo city. I work north. I want to become a programmer."
+let string = "Hello! Can I ask you a few questions? How can I get to the airport? Where can I find terminal №3?"
 
 func convertString(text: String) -> String {
     func convertNumber(number: Character) -> String {
@@ -84,7 +84,7 @@ func convertString(text: String) -> String {
         case " ":
             result += " "
         default:
-            result += ""
+            continue
         }
     }
     return result
@@ -97,7 +97,7 @@ convertString(text: string)
 // пример с факториалом числа
 
 // 3! = 1 * 2 * 3
-
+// пример с циклом
 func fact(number: Int) -> Int {
     if number <= 1 {
         return 1
@@ -111,7 +111,7 @@ func fact(number: Int) -> Int {
 }
 
 fact(number: 3)
-
+// рекурсия
 func factTwo(number: Int) -> Int {
     if number <= 1 {
         return 1
