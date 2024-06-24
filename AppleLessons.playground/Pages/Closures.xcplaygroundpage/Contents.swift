@@ -183,8 +183,94 @@ func someFunctionWithEscapingClosure(completionHandler: @escaping () -> Void) {
     completionHandlers.append(completionHandler)
 }
 
+func someFunctionWithNonescapingClosure(closure: () -> Void) {
+    closure()
+}
 
+class SomeClass {
+    var x = 10
+    func doSomething() {
+        someFunctionWithEscapingClosure { [self] in x += 1 }
+        someFunctionWithNonescapingClosure { x = 200 }
+    }
+}
 
+let instance = SomeClass()
+instance.doSomething()
+print(instance.x)
+// Prints "200"
+
+completionHandlers.first?()
+print(instance.x)
+instance.x = 1
+instance.x
+completionHandlers.first?()
+instance.x
+// Prints "100"
+
+class SomeOtherClass {
+    var x = 10
+    func doSomething() {
+        someFunctionWithEscapingClosure { [self] in x = 100 }
+        someFunctionWithNonescapingClosure { x = 200 }
+    }
+}
+
+let instanceOne = SomeOtherClass()
+instanceOne.x
+instanceOne.doSomething()
+instanceOne.x
+completionHandlers[1]()
+instanceOne.x
+
+// MARK: Автозамыкания (@autoclosure)
+// Автозамыкания - замыкания, которые автоматически создаются для заключения выражения, которое было передано в качестве аргумента функции. Такие замыкания не принимают никаких аргументов при вызове и возвращают значение выражения, которое заключено внутри нее. Синтаксически вы можете опустить круглые скобки функции вокруг параметров функции, просто записав обычное выражение вместо явного замыкания.
+
+// Пример отображает как замыкания откладывают действия
+var customersInLine = ["Chris", "Alex", "Ewa", "Barry", "Daniella"]
+print(customersInLine.count)
+// Выведет "5"
+ 
+let customerProvider = { customersInLine.remove(at: 0) }
+print(customersInLine.count)
+type(of: customerProvider)
+// Выведет "5"
+ 
+print("Now serving \(customerProvider())!")
+// Выведет "Now serving Chris!"
+print(customersInLine.count)
+// Выведет "4"
+
+// такое же поведение внутри функции
+// customersInLine равен ["Alex", "Ewa", "Barry", "Daniella"]
+func serve(customer customerProvider: () -> String) {
+    print("Now serving \(customerProvider())!")
+}
+serve(customer: { customersInLine.remove(at: 0) } )
+
+// Функция serve(customer:) описанная выше принимает явное замыкание, которое возвращает имя клиента. Версия функции serve(customer:) ниже выполняет ту же самую операцию, но вместо использования явного замыкания, она использует автозамыкание, поставив маркировку при помощи атрибута @autoclosure. Теперь вы можете вызывать функцию, как будто бы она принимает аргумент String вместо замыкания. Аргумент автоматически преобразуется в замыкание, потому что тип параметра customerProvider имеет атрибут @autoclosure.
+func serve(customer customerProvider: @autoclosure () -> String) {
+    print("Now serving \(customerProvider())!")
+}
+serve(customer: customersInLine.remove(at: 0))
+
+// Если вы хотите чтобы автозамыкание могло сбежать, то вам нужно использовать оба атрибута и @autoclosure, и @escaping
+
+// customersInLine равен ["Barry", "Daniella"]
+var customerProviders: [() -> String] = []
+func collectCustomerProviders(_ customerProvider: @autoclosure @escaping () -> String) {
+    customerProviders.append(customerProvider)
+}
+collectCustomerProviders(customersInLine.remove(at: 0))
+collectCustomerProviders(customersInLine.remove(at: 0))
+ 
+print("Collected \(customerProviders.count) closures.")
+// Выведет "Collected 2 closures."
+for customerProvider in customerProviders {
+    print("Now serving \(customerProvider())!")
+}
+// Выведет "Now serving Barry!"
+// Выведет "Now serving Daniella!"
 
 
 
