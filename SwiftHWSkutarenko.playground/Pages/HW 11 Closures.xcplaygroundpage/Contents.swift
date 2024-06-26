@@ -29,42 +29,44 @@ numbers.sorted(by: < )
 // Сделать то же самое только для тсроки и символов найти миниммальный и максимальный символ в строке по скалярному значению
 
 // 1
-func getInt(numbers: [Int], closure: (Int, Int?) -> Bool) -> Int! {
-    guard !numbers.isEmpty else {
-        return nil
-    }
-    var optional: Int? = numbers[0]
+func getNumber(in numbers: [Int], closure: (Int?, Int) -> Bool) -> Int {
+    var result = !numbers.isEmpty ? numbers[0] : nil
     for number in numbers {
-        optional = closure(number, optional) ? number : optional
+        result = closure(result, number) ? number : result
     }
-    return optional
+    return result ?? 0
+}
+let minOne = getNumber(in: numbers) {
+    $0 == nil || $0! > $1
 }
 
-let min = getInt(numbers: numbers) { $0 < $1! }
-let max = getInt(numbers: numbers) { $0 > $1! }
+let maxOne = getNumber(in: numbers) {
+    $0 == nil || $0! < $1
+}
 
 // 2
-let someSting = "asbdsjvbsnvjksndv123"
-let char: Character = "a"
-
-func getChar(in string: String, closure: (String, String) -> Bool) -> String {
-    guard !string.isEmpty else {
-        return ""
-    }
-    var str = String(string.first!)
+let someString = "asbdsjvbsnvjksndv123 #$%^ hsdhcvsJDBJCVB"
+func getChar(in string: String, closure: (String?, String) -> Bool) -> String {
+    var result = !string.isEmpty ? String(string.first!) : nil
     for char in string {
-        str = closure(String(char), str) ? String(char) : str
+        result = closure(result, String(char)) ? String(char) : result
     }
-    return str
+    return result ?? ""
 }
-let minChar = getChar(in: someSting) { $0 < $1 }
-let maxChar = getChar(in: someSting) { $0 > $1 }
+
+let minChar = getChar(in: someString) {
+    $0 == nil || $0! > $1
+}
+    
+let maxChar = getChar(in: someString) {
+    $0 == nil || $0! > $1
+}
+
 
 // 4. Создать произвольную строку преобразовать ее в массив [String] каждая строка - один символ. Испольуя метод sorted отсортировать этот массив так чтобы сначала шли гласные в алфавитном порядке, потом согласные в алфавитном порядке, потом цифры, а потом символы
 
-let string = "Hello! My name is Pavel. I'm from Russia. I'm 32 years old. I'm married to Darya. We live in Kemerovo city. I work north. I want to become a programmer."
 var letters: [String] = []
-for char in string {
+for char in someString {
     letters.append(String(char))
 }
 
