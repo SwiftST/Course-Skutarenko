@@ -3,6 +3,34 @@
 import Foundation
 
 // 1. Создать enum с шахматными фигурами каждый кейс должен иметь ассоциативные значения - цвет, буква колонки и цифра ряда (позиция). Инициализировать несколько фигур, поместить их на доску, чтобы черному королю был мат
+typealias Coord = (x: Character, y: Int)
+enum Figure {
+    enum Color: String {
+        case white
+        case black
+    }
+    enum Name: String, CaseIterable {
+        case king, queen, rook, bishop, horse, pawn
+    }
+    case figure(name: Name, color: Color, coord: Coord)
+    
+}
+
+func getLabel(for figure: Figure) -> String {
+    var startIndex = 0x2654
+    switch figure {
+    case let .figure(name, color, _):
+        startIndex += Figure.Name.allCases.firstIndex(of: name)!
+        startIndex += color == .white ? 0 : 6
+    }
+    return String(Unicode.Scalar(startIndex)!)
+}
+
+var blackKing = Figure.figure(name: .king, color: .black, coord: ("h", 8))
+var whiteQueen = Figure.figure(name: .queen, color: .white, coord: ("h", 3))
+var whiteRook = Figure.figure(name: .rook, color: .white, coord: ("g", 5))
+
+/*
 typealias Position = (x: Character, y: Int)
 enum Figure {
     enum Name: String, CaseIterable {
@@ -43,103 +71,118 @@ func getFigureInfo(for figure: Figure) -> FigureInfo {
 var queenWhite: Figure = .figure(name: .queen, color: .white, position: ("a", 1))
 var kingBlack: Figure = .figure(name: .king, color: .black, position: ("a", 8))
 var rookWhite: Figure = .figure(name: .rook, color: .white, position: ("b", 3))
-
+*/
 
 
 // 2. Положить все созданные фигуры в массив. В enum сделать rawValue - String название фигуры. Создать одну функцию которая принимает фигуру и через принт выводит тип этой фигуры, цвет и позицию. Создать еще одну функцию которая принимает массив фигур, проходится по нему и вызывает первую функцию
 
-var figures: [Figure] = [queenWhite, kingBlack, rookWhite]
+var figures = [blackKing, whiteQueen, whiteRook]
 
-func printFigures(figures: [Figure]) {
+func printFigure(_ figures: [Figure]) {
     for figure in figures {
         switch figure {
-        case let .figure(name, color, position):
-            print("\(figure.label) \(name.rawValue) \(color.rawValue) position: \(position.0)\(position.1)")
+        case let .figure(name, color, coord):
+            print("Figure: \(color.rawValue) \(name.rawValue), x: \(coord.x), y: \(coord.y)")
         }
     }
 }
-printFigures(figures: figures)
+printFigure(figures)
 
 // 3. Создать функцию которая будет рисовать доску. Она будет принимать массив фигур и рисовать шахматную доску.
 
-func printBattlefield(figures: [Figure]) {
-    var board: [String : Figure] = [:]
+
+func printChess(for figures: [Figure]) {
+    var temp: [String: Figure] = [:]
     for figure in figures {
-        let temp = getFigureInfo(for: figure)
-        if "abcdefgh".contains(temp.p.x) && 1...8 ~= temp.p.y {
-            board[String(temp.p.x) + String(temp.p.y)] = figure
-        } else {
-            print("Неверные координты фигуры \(temp.n) \(temp.c)")
+        switch figure {
+        case let .figure(name, color, coord):
+            temp[String(coord.x) + String(coord.y)] = figure
         }
     }
-    print("  a b c d e f g h")
-    for y in [8, 7, 6, 5, 4, 3, 2, 1] {
-        print(y, terminator: " ")
-        for (i, x) in "abcdefgh".enumerated() {
-            guard let figure = board["\(x)\(y)"] else {
-                print((i + y) % 2 == 0 ? "■" : "□", terminator: " ")
+    for x in (1...8).reversed() {
+        print(x, terminator: " ")
+        for (i, y) in "abcdefgh".enumerated() {
+            guard let someFigure = temp["\(y)\(x)"] else {
+                print((x + i) % 2 == 1 ? "◻︎" : "◼︎", terminator: " ")
                 continue
             }
-            print(figure.label, terminator: " ")
+            print(getLabel(for: someFigure), terminator: " ")
         }
-        print(y, terminator: " ")
-        print("")
+        print()
     }
     print("  a b c d e f g h")
 }
-printBattlefield(figures: figures)
+
+printChess(for: figures)
 
 // 4. Создать функцию которая будет принимать шахматную фигуру и второй параметр тюпл новой позиции на шахматной доске. Функция должна определять легален ли этот ход и если не легален не двигать фигуру (координаты за пределми доски, фигура так не ходит). Для нескольких фигур вызвать этуу функцию и распечатать доску с новым расположением фигур
 
-
-
-func makeAMove(figure: inout Figure, new pos: (x: Character, y: Int)) {
-    guard "abcdefgh".contains(pos.x), 1...8 ~= pos.y else {
-        print("Введены некорректные координаты")
+typealias FigureInfo = (name: Figure.Name, color: Figure.Color, coord: Coord)
+func getFigureInfo(for figure: Figure) -> FigureInfo {
+    switch figure {
+    case let .figure(name, color, coord):
+        return (name, color, coord)
+    }
+}
+func moveTheFigure(_ figure: inout Figure, on coord: Coord) {
+    guard 1...8 ~= coord.y, "a"..."h" ~= coord.x else {
+        print("Некорректные координаты")
         return
     }
     var temp = getFigureInfo(for: figure)
+    let (oldX, oldY) = (temp.coord.x, temp.coord.y)
     
-    func kingMove(_ x: Character, _ y: Int) -> Bool {
-        switch (x, y) {
-        case let (x, y) where abs(Int(x.asciiValue!) - Int(pos.x.asciiValue!)) == 1 && y == pos.y:
+    func kingMove() -> Bool {
+        switch (coord.x, coord.y) {
+        case let (x, y) where abs(Int(x.asciiValue!) - Int(oldX.asciiValue!)) == 1 && y == oldY:
             fallthrough
-        case let (x, y) where abs(y - pos.y) == 1 && x == pos.x:
+        case let (x, y) where abs(y - oldY) == 1 && x == oldX:
             fallthrough
-        case let (x, y) where abs(Int(x.asciiValue!) - Int(pos.x.asciiValue!)) == 1 && abs(y - pos.y) == 1:
+        case let (x, y) where abs(y - oldY) == 1 && abs(Int(x.asciiValue!) - Int(oldX.asciiValue!)) == 1:
             return true
         default:
             return false
         }
     }
     
-    func rookMove(_ x: Character, _ y: Int) -> Bool {
-        switch (x, y) {
-        case let (x, y) where x == pos.x && (y > pos.y || y < pos.y):
+    func rookMove() -> Bool {
+        switch (coord.x, coord.y) {
+        case let (x, y) where x == oldX && y != oldY:
             fallthrough
-        case let (x, y) where y == pos.y && (x > pos.x || x < pos.x):
+        case let (x, y) where x != oldX && y == oldY:
             return true
         default:
             return false
         }
     }
     
-    func elephantMove(_ x: Character, _ y: Int) -> Bool {
-        switch (x, y) {
-        case let (x, y) where Int(x.asciiValue!) + y == Int(pos.x.asciiValue!) + pos.y:
+    func bishopMove() -> Bool {
+        guard abs(Int(coord.x.asciiValue!) - Int(oldX.asciiValue!)) == abs(coord.y - oldY) else {
+            return false
+        }
+        return true
+    }
+    
+    func horseMove() -> Bool {
+        switch (coord.x, coord.y) {
+        case let (x, y) where abs(Int(x.asciiValue!) - Int(oldX.asciiValue!)) == 1 && abs(y - oldY) == 2:
             fallthrough
-        case let (x, y) where Int(x.asciiValue!) - y == Int(pos.x.asciiValue!) - pos.y:
+        case let (x, y) where abs(Int(x.asciiValue!) - Int(oldX.asciiValue!)) == 2 && abs(y - oldY) == 1:
             return true
         default:
             return false
         }
     }
-  
-    func horseMove(_ x: Character, _ y: Int) -> Bool {
-        switch (x, y) {
-        case let (x, y) where abs(Int(x.asciiValue!) - Int(pos.x.asciiValue!)) == 2 && abs(y - pos.y) == 1:
+    
+    func pawnMove() -> Bool {
+        switch (coord.x, coord.y, temp.color) {
+        case let (x, y, .white) where oldY == 2 && (x == oldX && (1...2).contains(y - oldY)):
             fallthrough
-        case let (x, y) where abs(Int(x.asciiValue!) - Int(pos.x.asciiValue!)) == 1 && abs(y - pos.y) == 2:
+        case let (x, y, .white) where x == oldX && y == oldY + 1:
+            fallthrough
+        case let (x, y, .black) where oldY == 7 && (x == oldX && (1...2).contains(oldY - y)):
+            fallthrough
+        case let (x, y, .black) where x == oldX && y == oldY - 1:
             return true
         default:
             return false
@@ -147,26 +190,37 @@ func makeAMove(figure: inout Figure, new pos: (x: Character, y: Int)) {
     }
     
     switch figure {
-    case .figure(.king, _, _) where kingMove(temp.p.x, temp.p.y):
+    case .figure(name: .king, _, _) where kingMove():
         fallthrough
-    case .figure(.queen, _, _) where rookMove(temp.p.x, temp.p.y) || elephantMove(temp.p.x, temp.p.y):
+    case .figure(name: .queen, _, _) where bishopMove() || rookMove():
         fallthrough
-    case .figure(.rook, _, _) where rookMove(temp.p.x, temp.p.y):
+    case .figure(name: .rook, _, _) where rookMove():
         fallthrough
-    case .figure(.elephant, _, _) where elephantMove(temp.p.x, temp.p.y):
+    case .figure(name: .bishop, _, _) where bishopMove():
         fallthrough
-    case .figure(.horse, _, _) where horseMove(temp.p.x, temp.p.y):
-        figure = .figure(name: temp.n, color: temp.c, position: (pos.x, pos.y))
+    case .figure(name: .horse, _, _) where horseMove():
+        fallthrough
+    case .figure(name: .pawn, _, _) where pawnMove():
+        figure = .figure(name: temp.name, color: temp.color, coord: coord)
     default:
-        print("\(temp.n) \(temp.c) так не ходит")
+        print("\(temp.name) \(temp.color) так не ходит")
         break
     }
 }
 
-makeAMove(figure: &figures[0], new: (x: "h", y: 1))
-printBattlefield(figures: figures)
-makeAMove(figure: &figures[1], new: (x: "c", y: 8))
-printBattlefield(figures: figures)
+// неверные координаты
+moveTheFigure(&figures[0], on: (x: "1", y: 1))
+// легитимный ход (king black)
+moveTheFigure(&figures[0], on: (x: "g", y: 7))
+// печать поля
+printChess(for: figures)
+// неверный ход (rook white)
+moveTheFigure(&figures[2], on: (x: "f", y: 6))
+// легитимный ход (rook white)
+moveTheFigure(&figures[2], on: (x: "c", y: 5))
+// печать поля
+printChess(for: figures)
+
 
 
 //: [Next](@next)
