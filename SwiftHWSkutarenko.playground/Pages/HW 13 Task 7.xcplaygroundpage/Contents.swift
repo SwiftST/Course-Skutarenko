@@ -149,11 +149,11 @@ struct Board {
         for y in [8, 7, 6, 5, 4, 3, 2, 1] {
             print(y, terminator: " ")
             for (i, x) in "abcdefgh".enumerated() {
-                guard battlefield["\(x)\(y)"] != nil else {
+                guard let figure = battlefield["\(x)\(y)"] else {
                     print(((i + y) % 2 == 0) ? "■" : "□", terminator: " ")
                     continue
                 }
-                print(battlefield["\(x)\(y)"]!.label, terminator: " ")
+                print(figure.label, terminator: " ")
             }
             print(y, terminator: " ")
             print("")
