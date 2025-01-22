@@ -45,7 +45,6 @@ let ewdColor = "red"
 let greenColor = "green"
 let clueColor = "Blue"
 */
-
 let (red, green, blue) = ("red", "green", "blue")
 red
 green

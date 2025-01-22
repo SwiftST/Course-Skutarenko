@@ -12,7 +12,7 @@ let valueInt = 12
 let valueFloat: Float = 1.2
 let valueDouble = 2.8
 
-let sumInt = Int(Double(valueInt) + Double(valueFloat) + valueDouble)
+let sumInt = Int(Double(valueFloat) + valueDouble) + valueInt
 let sumFloat = valueFloat + Float(valueInt) + Float(valueDouble)
 let sumDouble = valueDouble + Double(valueInt) + Double(valueFloat)
 

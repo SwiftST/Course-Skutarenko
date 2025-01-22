@@ -22,10 +22,11 @@ let nameOfMonth = [
 var monthsAndDays: [(month: String, day: Int)] = []
 let date = (m: "Octomber", d: 24)
 var result = 0
-for index in 0..<nameOfMonth.count {
-    print("\(nameOfMonth[index]) - \(daysInMonth[index])")
-    monthsAndDays += [(nameOfMonth[index], daysInMonth[index])]
+for (index, month) in nameOfMonth.enumerated() {
+    print("\(month) - \(daysInMonth[index])")
+    monthsAndDays += [(month, daysInMonth[index])]
 }
+print("")
 for (month, days) in monthsAndDays.reversed() {
     print("\(month) - \(days)")
 }
@@ -50,7 +51,6 @@ for number in numbers {
         sum += num
     }
 }
-sum
 // Forced unwrapping
 sum = 0
 for number in numbers {
@@ -68,16 +68,22 @@ sum
 
 
 // 3. создайте строку алфавит и пустой массив строк в цикле пройдитесь по всем символам строки попорядку, преобразовывайте каждый в строку и добавляйте в массив, причем так, чтобы на выходе получился массив с алфавитом задом-наперед
-let convertArray = Array(97...122).map { a in
-    Character(UnicodeScalar(a)!.escaped(asASCII: true))
+
+
+var alphabet: String = ""
+for i in 0..<26 {
+    alphabet += String(Unicode.Scalar(97 + i)!)
 }
-var alphabet = String(convertArray)
+// another decision
+//let convertArray = Array(97...122).map { a in
+//    Character(UnicodeScalar(a)!.escaped(asASCII: true))
+//}
+//var alphabet = String(convertArray)
 var someArray: [String] = []
 for letter in alphabet {
     someArray.insert(String(letter), at: 0)
 }
 someArray
-
 
 
 //: [Next](@next)

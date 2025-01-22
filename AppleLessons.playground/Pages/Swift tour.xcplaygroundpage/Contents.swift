@@ -28,7 +28,7 @@ var buyList = ["banana", "sugar", "cherry"]
 buyList[0]
 var workers = [
     "bob": "Ingener",
-    "lucy": "manager"
+    "lucy": "manager",
 ]
 workers["tom"] = "debeloper"
 workers.count
@@ -174,7 +174,7 @@ hasAnyMatches(list: [2, 345, 223, 22]) { a in
 }
 var numbers = [223, 22, 21, 67]
 let someMapValues = numbers.map { a in
-    return a / 100
+    return a % 2 == 1 ? 0 : a
 }
 print(someMapValues)
 var someNum = numbers.map { a in
@@ -382,7 +382,7 @@ if let convertedRank = Rank(rawValue: 3) {
     let threeDesription = convertedRank.simpleDescription()
 }
 
-enum Suit {
+enum Suit: CaseIterable {
     case spades, hearts, diamonds, clubs
     func simpleDescription() -> String {
         switch self {
@@ -396,18 +396,13 @@ enum Suit {
             return "clubs"
         }
     }
-    var color: String {
-        switch self {
-        case .spades, .clubs:
-            return "black"
-        case .hearts, .diamonds:
-            return "red"
-        }
+    func color() -> String {
+        return self == .spades || self == .clubs ? "black" : "red"
     }
 }
 let hearts = Suit.hearts
 let heartsDescription = hearts.simpleDescription()
-hearts.color
+hearts.color()
 
 enum ServerResponse {
     case result(String, String)
@@ -430,19 +425,21 @@ struct Card {
     func simpleDescription() -> String {
         return "The \(rank.simpleDescription()) of \(suit.simpleDescription())"
     }
-    func returnFullDeck() -> [Rank: Suit] {
-        var dict: [Rank: Suit] = [:]
-        for i in Rank.allCases {
-            dict[i] = suit
+    func returnFullDeck() -> [Card] {
+        var result: [Card] = []
+        for rank in Rank.allCases {
+            for suit in Suit.allCases {
+                result.append(Card(rank: rank, suit: suit))
+            }
         }
-        return dict
+        return result
     }
 }
 let threeOfSpades = Card(rank: .four, suit: .spades)
 print(threeOfSpades.simpleDescription())
 let fullDeck = threeOfSpades.returnFullDeck()
-for (rank, suit) in fullDeck {
-    print(String(rank.simpleDescription()) + " " + String(suit.simpleDescription()))
+for card in fullDeck {
+    print(card.simpleDescription())
 }
 
 // Протоколы и расширения
@@ -488,7 +485,7 @@ someSimpleStructure.simpleDescription
 
 extension Int: ExampleProtocol {
     var someProperty: Int {
-        return 0
+        return self + 1
     }
     
     var simpleDescription: String {
@@ -499,6 +496,7 @@ extension Int: ExampleProtocol {
     }
 }
 print(6.simpleDescription)
+444.someProperty
 
 extension Double {
     var absoluteValue: Double {
@@ -509,8 +507,11 @@ extension Double {
 
 // Имя протокола может быть использовано точно так же как и другие именованные типы, например чтобы создать коллекцию объектов, которые имеют разные типы данных, но соответствуют одному протоколлу. При работе со значениями чей тип протокол, методы и свойства за пределами объявения протокола недоступны
 
-let protocolValue: ExampleProtocol = someSimpleClass
+let protocolValue: any ExampleProtocol = someSimpleClass
 print(protocolValue.simpleDescription)
+var someArray: [ExampleProtocol] = [someSimpleClass, someSimpleStructure]
+print(type(of: someArray[0]))
+
 
 
 // Обработка ошибок
@@ -546,8 +547,8 @@ do {
     print("no tonner")
 } catch PrinterError.onFire {
     print("I'll just put this over here, with the rest of the fire.")
-} catch let printerError as PrinterError {
-    print("Print Erroe: \(printerError)")
+} catch PrinterError.outOfPaper {
+    print("Print Error: out of paper")
 } catch {
     print(error)
 }
@@ -576,10 +577,41 @@ func fridgeContains(_ food: String) -> Bool {
 fridgeContains("milk")
 //print(fridgeIsOpen)
 
+// MARK: Универсальные типы (Generics)
+// Напишите имя внутри угловых скобок, чтобы создать универсальную (generic) функцию или тип
+func makeArray<Item>(repeating item: Item, count: Int) -> [Item] {
+    var result: [Item] = []
+    for _ in 0..<count {
+        result.append(item)
+    }
+    return result
+}
+makeArray(repeating: "as", count: 3)
+
+// вы можете создать общие формы функций и методов, так же как и классов, перечислений и структур
+enum OptionalValue<Wrapped> {
+    case none
+    case some(Wrapped)
+}
+var possibleInteger: OptionalValue<Int> = .none
+possibleInteger = .some(11)
+
+// Используйте where после названия типа (после входных и выходных типов), чтобы указать список требований, например потребовать, чтобы тип реализовал протокол, потребовать, чтобы два типа были одинаковы или потребовать чтобы класс имел определенный суперкласс
+
+func anyCommonElements<T: Sequence, U: Sequence>(_ lhs: T, _ rhs: U) -> [T.Element] where T.Element: Equatable, T.Element == U.Element {
+    var temp: [T.Element] = []
+    for lhsItem in lhs {
+        for rhsItem in rhs {
+            if lhsItem == rhsItem {
+                temp.append(lhsItem)
+            }
+        }
+    }
+    return temp
+}
 
 
-
-
+anyCommonElements([1, 2, 3], [4, 1, 3])
 
 
 //: [Next](@next)

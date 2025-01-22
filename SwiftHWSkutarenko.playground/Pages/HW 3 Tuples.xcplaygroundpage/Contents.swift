@@ -24,6 +24,7 @@ import Foundation
 
 // 1
 let myResults = (pushUps: 33, pullUps: 10, sitUps: 30)
+print("My results:", myResults)
 
 // 2
 print("My results:\n" +
@@ -37,6 +38,7 @@ tempTuple.pushUps = 25
 tempTuple.pullUps = 5
 tempTuple.sitUps = 40
 let wifeResults = tempTuple
+print("Wife results:", wifeResults)
 print("My wife results:\n" +
       "1.maximum number of push-ups - \(wifeResults.pushUps)\n" +
       "2.maximum number of pull-ups - \(wifeResults.1)\n" +

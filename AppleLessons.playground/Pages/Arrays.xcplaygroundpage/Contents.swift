@@ -9,7 +9,7 @@ import Foundation
 
 // создание пустого массива (синтаксис инициализатора)
 var someInts = [Int]()
-print("someInts is of type [Int] with \(someInts.count) items")
+print("someInts is of type \(type(of: someInts)) with \(someInts.count) items")
 someInts.append(3)
 // создание пустого массива с помощью пустого литерала массива
 someInts = []
