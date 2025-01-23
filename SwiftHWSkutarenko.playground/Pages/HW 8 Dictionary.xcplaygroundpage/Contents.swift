@@ -63,8 +63,9 @@ var chessCells: [String: Bool] = [:]
 
 for (index, letter) in "abcdefgh".enumerated() {
     for number in 1...8 {
-        chessCells["\(letter)\(number)"] = (index + 1 + number) % 2 != 0
-        print("Ячейка \(letter)\(number) is \(chessCells["\(letter)\(number)"]! ? "white" : "black")")
+        let key = "\(letter)\(number)"
+        chessCells["\(key)"] = (index + number) % 2 == 0
+        print("Ячейка \(key) is \(chessCells["\(key)"]! ? "white" : "black")")
     }
 }
 

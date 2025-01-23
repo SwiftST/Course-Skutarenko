@@ -67,7 +67,11 @@ if favoriteGenres.isEmpty {
 favoriteGenres.insert("Jazz")
 
 // удаление одного элемента (возвращает удаленное значение или nil если оно отсутствует во множестве)
-let removeElement = favoriteGenres.remove("Rock")
+if let removedGenre = favoriteGenres.remove("Rock") {
+    print("\(removedGenre)? I'm over it")
+} else {
+    print("I never much cared for that.")
+}
 
 // Наличие определенного элемента во множестве
 favoriteGenres.contains("Jazz")
@@ -99,7 +103,7 @@ print("")
 
 // 2. Используйте метод intersection(_:) для создания нового множества из общих значений двух входных множеств.
 let intersectionSet = oddDigits.intersection(singleDigitPrimeNumbers)
-for number in intersectionSet {
+for number in intersectionSet.sorted() {
     print(number, terminator: " ")
 }
 print("")
@@ -120,7 +124,6 @@ for number in differenceSet {
 let houseAnimals: Set = ["Dog", "Cat"]
 let farmAnimals: Set = ["Dog", "Cat", "Horse", "Pig", "Chiken"]
 let cityAnimals: Set = ["Mouse", "Crow"]
-
 
 // 1. Используйте оператор равенства (==) для определения все ли значения двух множеств одинаковы.
 houseAnimals == cityAnimals

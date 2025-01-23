@@ -9,9 +9,9 @@ import Foundation
 // Cокращенная форма записи [Key: Value]
 
 // Создание пустого словаря (синтаксис инициализатора)
-var namesOfIntegers = [Int: String]()
+var namesOfIntegers: [Int: String] = [:]
 namesOfIntegers[16] = "sixteen"
-// c помощью литерала словаря
+// если тип словаря уже известен
 namesOfIntegers = [:]
 
 // создание словаря с литералом словаря
