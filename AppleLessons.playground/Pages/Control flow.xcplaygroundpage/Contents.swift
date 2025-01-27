@@ -460,7 +460,7 @@ if score < 10 {
         print(score)
     }
     defer {
-        print("The score is:")
+        print("The score is: ", terminator: "")
     }
     score += 5
 }

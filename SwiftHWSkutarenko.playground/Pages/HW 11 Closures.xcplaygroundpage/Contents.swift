@@ -14,9 +14,10 @@ func someFunction(closure: () -> ()) {
         sum += i
     }
     closure()
+    print(sum)
 }
 someFunction {
-    print("sum = ")
+    print("sum = ", terminator: "")
 }
 
 // 2. Создать массив [Int] отсортировать его с помощью метода sorted по возрастанию и по убыванию
@@ -37,15 +38,15 @@ func getNumber(in numbers: [Int], closure: (Int?, Int) -> Bool) -> Int {
     return result ?? 0
 }
 let minOne = getNumber(in: numbers) {
-    $0 == nil || $0! > $1
+    $0! > $1
 }
 
 let maxOne = getNumber(in: numbers) {
-    $0 == nil || $0! < $1
+    $0! < $1
 }
 
 // 2
-let someString = "asbdsjvbsnvjksndv123 #$%^ hsdhcvsJDBJCVB"
+let someString = "asbdsjvbsnvjkeuoisndv123#$%^hsdhcvsJDBJCVB"
 func getChar(in string: String, closure: (String?, String) -> Bool) -> String {
     var result = !string.isEmpty ? String(string.first!) : nil
     for char in string {
@@ -55,11 +56,11 @@ func getChar(in string: String, closure: (String?, String) -> Bool) -> String {
 }
 
 let minChar = getChar(in: someString) {
-    $0 == nil || $0! > $1
+    $0! > $1
 }
     
 let maxChar = getChar(in: someString) {
-    $0 == nil || $0! > $1
+    $0! < $1
 }
 
 
