@@ -96,17 +96,17 @@ func printChess(for figures: [Figure]) {
     for figure in figures {
         switch figure {
         case let .figure(name, color, coord):
-            temp[String(coord.x) + String(coord.y)] = figure
+            temp["\(coord.x)\(coord.y)"] = figure
         }
     }
     for x in (1...8).reversed() {
         print(x, terminator: " ")
         for (i, y) in "abcdefgh".enumerated() {
-            guard let someFigure = temp["\(y)\(x)"] else {
+            guard let figure = temp["\(y)\(x)"] else {
                 print((x + i) % 2 == 1 ? "◻︎" : "◼︎", terminator: " ")
                 continue
             }
-            print(getLabel(for: someFigure), terminator: " ")
+            print(getLabel(for: figure), terminator: " ")
         }
         print()
     }
@@ -202,6 +202,7 @@ func moveTheFigure(_ figure: inout Figure, on coord: Coord) {
         fallthrough
     case .figure(name: .pawn, _, _) where pawnMove():
         figure = .figure(name: temp.name, color: temp.color, coord: coord)
+        print("\(temp.name) \(temp.color) \(oldX)\(oldY) ходит на \(coord.x)\(coord.y)")
     default:
         print("\(temp.name) \(temp.color) так не ходит")
         break
