@@ -5,117 +5,171 @@ import Foundation
 // MARK: Properties
 
 // 1. Повторить все что было на уроке
-
 // 2. Добавить для структуры студент свойство дата рождения (dob), которое будет тоже реализована как структура Birthday.
 
 // 3. Добавить computed property которое будет считать сколько студенту лет на основании dob.
 
 // 4. Добавить еще одно computed property которое будет считать сколько студент учился (количество лет - 6), если меньше 6 лет то возвращать ноль
 
-struct DateOfBirth {
-    enum Month: Int {
-        case jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
-    }
-    var year: Int
-    var month: Month
-    var day: Int {
-        didSet {
-            let dateFormatter = DateFormatter()
-            dateFormatter.dateFormat = "yyyy-MM-dd"
-            guard let date = dateFormatter.date(from: "\(year)-\(month)-\(day)") else {
-                print("\(day).\(month.rawValue).\(year) - invalid date. Day did set \(oldValue) instead of \(day)")
-                day = oldValue
-                return
+// MARK: - Tasks from 1 to 4
+struct StudentSt {
+    // MARK: Struct Date of birth
+    struct DateOfBirth {
+        enum Month: Int, CaseIterable {
+            case jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
+        }
+        
+        var year: Int
+        var month: Month
+        var day: Int {
+            didSet {
+                let dateFormatter = DateFormatter()
+                dateFormatter.dateFormat = "yyyy-MM-dd"
+                guard let date = dateFormatter.date(from: "\(year)-\(month.rawValue)-\(day)") else {
+                    print("Incorrect date (day is \(day)). Returning old value day is \(oldValue)")
+                    day = oldValue
+                    return
+                }
             }
-        }
-    }
-}
-
-struct Student {
-    var name: String {
-        willSet {
-            print("will set " + newValue + " instead of " + name)
-        }
-        didSet {
-            print("did set " + name + " instaed of " + oldValue)
-            name = name.capitalized
-        }
-    }
-    var surname: String {
-        willSet {
-            print("will set " + newValue + " instead of " + surname)
-        }
-        didSet {
-            print("did set " + surname + " instaed of " + oldValue)
-            surname = surname.capitalized
-        }
-    }
-    var fullName: String {
-        get {
-            name.capitalized + " " + surname.capitalized
-        }
-        set {
-            let temp = newValue.components(separatedBy: " ")
-            if temp.count > 0 {
-                name = temp[0]
-            }
-            if temp.count > 1 {
-                surname = temp[1]
-            }
-        }
-    }
-    var dateOfBirth: DateOfBirth
-    var age: Int {
-        let currentDay = Calendar.current.component(.day, from: Date())
-        let currentMonth = Calendar.current.component(.month, from: Date())
-        let currentYear = Calendar.current.component(.year, from: Date())
-        switch (dateOfBirth.day, dateOfBirth.month.rawValue, dateOfBirth.year) {
-        case let (d, m, y) where currentMonth > m:
-            fallthrough
-        case let (d, m, y) where (m == currentMonth && currentDay >= d):
-            return currentYear - y
-        default:
-            return currentYear - dateOfBirth.year - 1
         }
     }
     
-    var yearOfStudy: Int {
-        let result = age > 6 ? age - 6 : 0
-        switch result {
-        case 0: print("The student doesn't study")
-        case 0...11: print("Schoolboy")
-        case 12...15: print("Bachelor")
-        case 16...17: print("Master")
-        case 18...: print("professor")
-        default:
-            break
+    // MARK: Stored properties
+    var firstName: String {
+        willSet(newFirstName) {
+            print("will set \(newFirstName) instead of \(firstName)")
         }
+        didSet(oldName) {
+            print("did set \(firstName) instead of \(oldName)")
+            firstName = firstName.capitalized
+        }
+    }
+    var lastName: String {
+        didSet {
+            lastName = lastName.capitalized
+        }
+    }
+    var dateOfBirth: DateOfBirth
+    
+    // MARK: computed properties
+    var age: Int {
+        get {
+            let currentDay = Calendar.current.component(.day, from: Date())
+            let currentMonth = Calendar.current.component(.month, from: Date())
+            let currentYear = Calendar.current.component(.year, from: Date())
+            guard currentYear > dateOfBirth.year else { return 0 }
+            switch (dateOfBirth.day, dateOfBirth.month.rawValue) {
+            case let(d, m) where m < currentMonth:
+                fallthrough
+            case let(d, m) where m == currentMonth && d <= currentDay:
+                return currentYear - dateOfBirth.year
+            default:
+                return currentYear - dateOfBirth.year - 1
+            }
+        }
+    }
+    
+    var yearsOfStudy: Int {
+        let result = age > 6 ? age - 6 : 0
+        var message = "The student studies for \(result) years. He is "
+        
+        switch result {
+        case 0: message = "The student doesn't study"
+        case ..<12: message += "a schoolbay"
+        case ..<17: message += "a student"
+        case 6...: message += "a professor"
+        default: break
+        }
+        
+        print(message)
         return result
+    }
+    
+    var fullName: String {
+        get {
+            return firstName + " " + lastName
+        }
+        set(newValue) {
+            let temp = newValue.components(separatedBy: " ")
+            if temp.count > 0 {
+                firstName = temp[0]
+            }
+            if temp.count > 1 {
+                lastName = temp[1]
+            }
+        }
     }
 }
 
-var student = Student(name: "as", surname: "sdd", dateOfBirth: DateOfBirth(year: 1990, month: .sep, day: 16))
-
-student.name
-student.surname
-student.name = "oLeg"
-student.surname = "eremin"
-student.name
-student.surname
-student.fullName
-student.fullName = "koNor mcGregor"
-student.name
-student.surname
-student.fullName
-
-student.age
-student.dateOfBirth.month = .feb
-student.dateOfBirth.day = 30
-student.yearOfStudy
+var studentSt = StudentSt(firstName: "Lo", lastName: "Traffalgar", dateOfBirth: StudentSt.DateOfBirth(year: 1990, month: .feb, day: 8))
+studentSt.firstName
+studentSt.firstName = "bOB"
+studentSt.firstName
+studentSt.fullName = "ARIA sTark"
+studentSt.firstName
+studentSt.lastName
+studentSt.fullName
+studentSt.age
+studentSt.dateOfBirth.day = 33
+studentSt.age
+studentSt.yearsOfStudy
 
 
 // 5. Создать структуру отрезок, у которой будут две внутрение структуры "точка". Структура отрезок содержит две точки А и В и это stored property, а так же два computed propertied, первое это midle point это точка между двумя точками А и В, второе длинна вашего отрезка.
+// MARK: - Task №5
 
+struct Cut {
+    // struct Point
+    struct Point {
+        var x: Double
+        var y: Double
+    }
+    // stored properties
+    var a: Point
+    var b: Point
+    // computed properties
+    var middlePoint: Point {
+        get {
+            return Point(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
+        }
+        set(newCoord) {
+            let (oldX, oldY) = (middlePoint.x, middlePoint.y)
+            a.x = newCoord.x - (oldX - a.x)
+            a.y = newCoord.y - (oldY - a.y)
+            b.x = newCoord.x - (oldX - b.x)
+            b.y = newCoord.y - (oldY - b.y)
+        }
+        
+    }
+    var length: Double {
+        get {
+            sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
+        }
+        set {
+            let difLength = newValue - length
+            let (oldX, oldY) = (b.x, b.y)
+            b.x = oldX + (oldX - a.x) / length * difLength
+            b.y = oldY + (oldY - a.y) / length * difLength
+        }
+        
+    }
+    
+}
+var someCut = Cut(a: Cut.Point(x: 1, y: 3), b: Cut.Point(x: 4, y: 5))
+someCut.middlePoint
+someCut.middlePoint = Cut.Point(x: 4, y: 5)
+someCut.a
+someCut.b
+someCut.length
+someCut.length = 4
+someCut.b
+someCut.middlePoint
+
+
+
+
+
+/*
 struct Cut {
     var a: Point
     var b: Point
@@ -154,7 +208,7 @@ someCut.midlePoint = Point(x: 5, y: 2)
 someCut.a
 someCut.b
 
-
+*/
 
 
 

@@ -2,7 +2,7 @@
 
 import Foundation
 
-// MARK: Обертки свойств (property wrappers)
+// MARK: - Обертки свойств (property wrappers)
 
 // Обертка свойства добавляет слой резделения между кодом, который определяет как свойство хранится и кодом, который определяет само свойство.
 // Когда вы используете обертку, то вы пишите управляющий код один раз, а затем определяете обертку, которую можете переиспользовать для необходимых свойств
@@ -24,7 +24,17 @@ struct TwelveOrLess {
 
 // вы применяете обертку для свойства написав имя обертки перед свойством в виде атрибута.
 struct SmallRectangle {
-    @TwelveOrLess var height: Int
+    @TwelveOrLess var height: Int {
+        willSet {
+            print("will set height to \(newValue)")
+            if newValue > 12 {
+                print("will set value from property wrapper")
+            }
+        }
+        didSet {
+            print("did set height to \(height) instead of \(oldValue)")
+        }
+    }
     @TwelveOrLess var width: Int
 }
 var rectangle = SmallRectangle()
@@ -62,7 +72,7 @@ struct UpperCaseWrapper {
     }
     
     init(wrappedValue: String) {
-        self.value = wrappedValue
+        value = wrappedValue.uppercased()
     }
 }
 
@@ -70,12 +80,12 @@ struct Person {
     @UpperCaseWrapper
     var name: String
 }
-var somePers = Person(name: "Kyle")
+var somePers = Person(name: "kyle")
 print(somePers.name)
 somePers.name = "Lidia"
 somePers.name
 
-// MARK: Установка исходных значений для оберток свойств
+// MARK: - Установка исходных значений для оберток свойств
 
 @propertyWrapper
 struct SmallNumber {
@@ -95,6 +105,7 @@ struct SmallNumber {
     init(wrappedValue: Int) {
         maximum = 12
         number = min(wrappedValue, maximum)
+        print("init(wrappedValue:)")
     }
     
     init(wrappedValue: Int, maximum: Int) {
@@ -117,8 +128,8 @@ zeroRectangle.weight
 // если указать начальное значение для свойства будет использоваться инициализатор init(wrappedValue:)
 
 struct UnitRectangle {
-    @SmallNumber var height: Int = 1
-    @SmallNumber var weight: Int = 1
+    @SmallNumber var height: Int
+    @SmallNumber var weight: Int
 }
 var unitRectangle = UnitRectangle()
 unitRectangle.height
@@ -155,7 +166,7 @@ mixedRectangle.width = 100
 
 mixedRectangle.width
 
-// MARK: Проецирование значения из обертки свойства
+// MARK: - Проецирование значения из обертки свойства
 
 // В дополнении к обернотому значению обертка свойства может предоставлять дополнительные функциональные возможности, определяя проецируемое значение, например, обертка свойства, которая управляет доступом к базе данных, может предоставлять метод flushDatabaseConnection() для ее проецируемого значения. Имя проецируемого значения такое же как и значение в обертке, за исключением того что оно начинается со знака $. Поскольку ваш код не может определять свойства начинающиеся с символа $, проецируемое значение никогда не влияет на свойства, которые вы определяете.
 
@@ -216,5 +227,7 @@ struct SizedRectangle {
 }
 var sizedRectangle = SizedRectangle()
 sizedRectangle.resize(to: .small)
+sizedRectangle.height
+sizedRectangle.width
 
 //: [Next](@next)
