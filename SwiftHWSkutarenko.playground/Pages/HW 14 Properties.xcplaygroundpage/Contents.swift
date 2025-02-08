@@ -13,7 +13,7 @@ import Foundation
 
 // MARK: - Tasks from 1 to 4
 struct StudentSt {
-    // MARK: Struct Date of birth
+    // Struct Date of birth
     struct DateOfBirth {
         enum Month: Int, CaseIterable {
             case jan = 1, feb, mar, apr, may, jun, jul, aug, sep, oct, nov, dec
@@ -34,7 +34,7 @@ struct StudentSt {
         }
     }
     
-    // MARK: Stored properties
+    // Stored properties
     var firstName: String {
         willSet(newFirstName) {
             print("will set \(newFirstName) instead of \(firstName)")
@@ -51,7 +51,7 @@ struct StudentSt {
     }
     var dateOfBirth: DateOfBirth
     
-    // MARK: computed properties
+    // computed properties
     var age: Int {
         get {
             let currentDay = Calendar.current.component(.day, from: Date())
@@ -117,9 +117,7 @@ studentSt.yearsOfStudy
 
 // 5. Создать структуру отрезок, у которой будут две внутрение структуры "точка". Структура отрезок содержит две точки А и В и это stored property, а так же два computed propertied, первое это midle point это точка между двумя точками А и В, второе длинна вашего отрезка.
 // MARK: - Task №5
-
 struct Cut {
-    // struct Point
     struct Point {
         var x: Double
         var y: Double
@@ -133,27 +131,23 @@ struct Cut {
             return Point(x: (a.x + b.x) / 2, y: (a.y + b.y) / 2)
         }
         set(newCoord) {
-            let (oldX, oldY) = (middlePoint.x, middlePoint.y)
-            a.x = newCoord.x - (oldX - a.x)
-            a.y = newCoord.y - (oldY - a.y)
-            b.x = newCoord.x - (oldX - b.x)
-            b.y = newCoord.y - (oldY - b.y)
+            let (difX, difY) = (newCoord.x - middlePoint.x, newCoord.y - middlePoint.y)
+            a.x += difX
+            a.y += difY
+            b.x += difX
+            b.y += difY
         }
-        
     }
     var length: Double {
         get {
             sqrt(pow(b.x - a.x, 2) + pow(b.y - a.y, 2))
         }
         set {
-            let difLength = newValue - length
-            let (oldX, oldY) = (b.x, b.y)
-            b.x = oldX + (oldX - a.x) / length * difLength
-            b.y = oldY + (oldY - a.y) / length * difLength
+            let oldLength = length
+            b.x = a.x + (newValue * (b.x - a.x)) / oldLength
+            b.y = a.y + (newValue * (b.y - a.y)) / oldLength
         }
-        
     }
-    
 }
 var someCut = Cut(a: Cut.Point(x: 1, y: 3), b: Cut.Point(x: 4, y: 5))
 someCut.middlePoint
@@ -161,7 +155,7 @@ someCut.middlePoint = Cut.Point(x: 4, y: 5)
 someCut.a
 someCut.b
 someCut.length
-someCut.length = 4
+someCut.length = 6
 someCut.b
 someCut.middlePoint
 
