@@ -4,12 +4,13 @@ import Foundation
 
 // MARK: Property type
 
+// MARK: - Task 1
 // 1. Создать структуру "Описание файла" со свойствами путь файла, имя файла, максимальный размер файла, путь к папке содержащий этот файл, тип файла (скрытый или нет), содержимое файла (какия либо строка). Использовать правильные свойства там где это нужно
 
 struct File {
-    
+    // type's stored property
     static let maxSizeFile = 1000
-    
+    // stored properties
     var pathToFile: String
     var isHeaden: Bool
     var size: Int {
@@ -19,7 +20,7 @@ struct File {
             }
         }
     }
-    
+    // computed properties
     var name: String? {
         get {
             let temp = pathToFile.components(separatedBy: "/")
@@ -41,7 +42,7 @@ struct File {
         }
         return String(pathToFile.dropLast(name!.count + 1))
     }
-    
+    // lazy stored properties
     lazy var contentsFile = "Here will be the contents of the file"
 }
 
@@ -58,96 +59,87 @@ file.pathToFile
 file.pathToFolder
 
 
-
+// MARK: - Task 2
 // 2. Создайте энум, который будет представлять некую цветовую гамму. Этот энум должен быть типа Int и как raw значение должен иметь соответствующее 3 байтное представление цвета. Добавьте в этот энум 3 свойства типа: количество цветов в гамме, начальный цвет и конечный цвет.
 
-
-
 enum ColorPalette: Int {
+    static let numberOfColors = 3
+    static let initialColor = Self.red
+    static let endColor = Self.blue
+    
     case red = 0xFF0000
     case green = 0x00FF00
     case blue = 0x0000FF
-    
-    static let countColors = 3
-    static let initialColor = Self.red
-    static let endColor = Self.blue
 }
 
 
+// MARK: - Task 3
 // 3. Создать класс человек (имя, фамилия, возраст, рост, вес) добавить свойства максимальный возраст, минимальный возраст, минимальный вес, максимальный вес, максимальная длинна имени, максимальная длинна фамилии. В обсерверах сделать так чтобы значение не выставлялось если значение не соответствует. Создать свойство в классе, которое будет содержать количество созданных объектов этого класса
 
 class Human {
+    // stored type's properties
     static let maxAge = 100
     static let minAge = 0
-    static let minWeight = 3
-    static let maxWeight = 200
-    static let maxLenghtName = 7
-    static let maxLenghtSurname = 10
-    static var countHumans = 0
+    static let minWeight = 5.0
+    static let maxWeight = 200.0
+    static let maxNameLenght = 8
+    static let maxSurnameLenght = 12
+    // computed type's property
+    static var numberOfHumans = 0
     
+    // stored properties
     var name: String {
         didSet(oldName) {
-            if name.count > Self.maxLenghtName {
-                print("Name too long")
+            if name.count > Self.maxNameLenght {
+                print("New name \(name) is too long. Set an old name \(oldName)")
                 name = oldName
             }
         }
     }
     var surname: String {
         didSet(oldSurname) {
-            if surname.count > Self.maxLenghtSurname {
-                print("Surname too long")
-                surname = oldSurname
+            if surname.count > Self.maxNameLenght {
+                print("New surname \(surname) is too long. Set an old surname \(oldSurname)")
             }
         }
     }
     var age: Int {
         didSet(oldAge) {
-            if age < Self.minAge {
-                print("Age can't be negative")
-                age = oldAge
-            } else if age > Self.maxAge {
-                print("Don't live that long")
-                age = oldAge
+            guard Self.minAge...Self.maxAge ~= age else {
+                print("Human age incorrect. Set an old age")
+                return age = oldAge
             }
         }
     }
     var height: Int
     var weight: Double {
         didSet(oldWeight) {
-            if Double(Self.minWeight) > weight {
-                print("Weight can't be less than \(Self.minWeight)")
-                weight = oldWeight
-            } else if Double(Self.maxWeight) < weight {
-                print("Weight can't be more than \(Self.maxWeight)")
-                weight = oldWeight
+            guard Self.minWeight...Self.maxWeight ~= weight else {
+                print("Human weight incorrect. Set an old weight")
+                return weight = oldWeight
             }
         }
-       
     }
     
+    // init
     init(name: String, surname: String, age: Int, height: Int, weight: Double) {
         self.name = name
         self.surname = surname
         self.age = age
         self.height = height
         self.weight = weight
-        
-        Self.countHumans += 1
+        // подсчет количества экземпляров Human
+        Self.numberOfHumans += 1
     }
 }
 
-let human = Human(name: "Peter", surname: "Lo", age: 31, height: 182, weight: 66)
-human.name = "Anastasia"
-human.name
-human.surname = "Pen"
-human.age = -3
-human.age = 200
-Human.countHumans
-human.weight = 201
-
-
-
+let man = Human(name: "Oleg", surname: "Li", age: 22, height: 160, weight: 68)
+man.age = 120
+Human.numberOfHumans
+let woman = Human(name: "Kira", surname: "Pronira", age: 45, height: 173, weight: 66)
+woman.name = "abrakatabra"
+Human.numberOfHumans
+woman.weight = 205
 
 
 //: [Next](@next)
